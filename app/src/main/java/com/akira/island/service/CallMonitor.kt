@@ -73,7 +73,7 @@ class CallMonitor(private val context: Context, private val scope: CoroutineScop
     private fun publish(incoming: Boolean) {
         val num = number
         val base = if (incoming) System.currentTimeMillis() else since
-        put(CallInfo(KEY, dialer(), num?.let(::format) ?: tr("Звонок", "Call"), null, incoming, base, System.currentTimeMillis(),
+        put(CallInfo(KEY, dialer(), num?.let(::format) ?: tr("Звонок", "Chamada"), null, incoming, base, System.currentTimeMillis(),
             null, null, null, null))
         // Имя и фото из контактов подставляем, когда найдутся
         lookupJob?.cancel()

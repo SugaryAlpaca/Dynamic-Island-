@@ -131,7 +131,7 @@ object PayMonitor {
         readyPkg = pkg
         readyShownAt = SystemClock.elapsedRealtime()
         readyShownPkg = appFor(pkg)
-        PayDebug.add(tr("Экран оплаты", "Payment screen"), pkg)
+        PayDebug.add(tr("Экран оплаты", "Tela de pagamento"), pkg)
         IslandBus.payReady.value = PayReady(pkg, NotificationParser.icon(context, appFor(pkg)))
         readyTimeout?.cancel()
         readyTimeout = IslandBus.scope.launch {
@@ -192,7 +192,7 @@ object PayMonitor {
         clearReady()
         IslandBus.post(
             Notice(
-                title = tr("Оплачено", "Paid"),
+                title = tr("Оплачено", "Pago"),
                 state = sum,
                 icon = Ios.load(context, R.drawable.ios_checkmark_circle),
                 tint = Tints.Green,
@@ -207,7 +207,7 @@ object PayMonitor {
     /** Приложение оплаты показало у себя галочку и сумму. */
     fun onScreenPaid(context: Context, pkg: String, sum: String) {
         val s = SettingsRepo.current
-        PayDebug.add(tr("С экрана: оплачено $sum", "From the screen: paid $sum"), pkg)
+        PayDebug.add(tr("С экрана: оплачено $sum", "Da tela: pago $sum"), pkg)
         if (!s.enabled || !s.evPaySuccess || alreadyShown(sum)) return
         val app = appFor(pkg)
         showPaid(context, sum, NotificationParser.appLabel(context, app), app)
@@ -236,7 +236,7 @@ object PayMonitor {
         // У настоящей оплаты всегда есть сумма; без неё это скорее реклама или новость банка
         val sum = PayScreenParser.amount(all)
         if (sum == null) {
-            PayDebug.add(tr("Без суммы — не оплата", "No amount — not a payment"), pkg, all)
+            PayDebug.add(tr("Без суммы — не оплата", "Sem valor — não é pagamento"), pkg, all)
             return false
         }
         // Кошельки (Google Кошелёк, Samsung Wallet, Mir Pay) пишут только магазин и сумму с картой, без слова «оплата»;
@@ -244,7 +244,7 @@ object PayMonitor {
         val recent = readyShownAt != 0L && SystemClock.elapsedRealtime() - readyShownAt < PAY_WINDOW_MS &&
             (pkg == readyShownPkg || sms || isPayApp(context, pkg))
         val paid = !skip.containsMatchIn(all) && (success.containsMatchIn(all) || pkg in wallets || recent)
-        PayDebug.add(if (paid) tr("Оплачено $sum", "Paid $sum") else tr("Не похоже на оплату", "Doesn't look like a payment"), pkg, all)
+        PayDebug.add(if (paid) tr("Оплачено $sum", "Pago $sum") else tr("Не похоже на оплату", "Não parece um pagamento"), pkg, all)
         if (!paid) return false
         if (alreadyShown(sum)) return true
         showPaid(context, sum, if (sms) title else NotificationParser.appLabel(context, pkg), pkg)

@@ -77,7 +77,7 @@ fun SizeScreen(onBack: () -> Unit) {
 
     Box(Modifier.fillMaxSize()) {
         Page(
-            tr("Положение и размер", "Position and size"),
+            tr("Положение и размер", "Posição e tamanho"),
             onBack = cancel,
             action = {
                 Box(
@@ -87,7 +87,7 @@ fun SizeScreen(onBack: () -> Unit) {
                     },
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(Icons.Rounded.Restore, tr("Сбросить", "Reset"), tint = Ui.Text)
+                    Icon(Icons.Rounded.Restore, tr("Сбросить", "Redefinir"), tint = Ui.Text)
                 }
             },
         ) {
@@ -95,26 +95,26 @@ fun SizeScreen(onBack: () -> Unit) {
                 // Камера слева или справа — сдвиньте капсулу к ней; широкие плашки всё равно остаются на экране
                 GroupStepSlider(
                     Pos.First, Icons.Rounded.SwapHoriz, tr("По горизонтали", "Horizontal"), s.offsetX, -200..200,
-                    action = tr("Центр", "Center") to { set { copy(offsetX = 0) } }, color = Tile.Blue,
+                    action = tr("Центр", "Centro") to { set { copy(offsetX = 0) } }, color = Tile.Blue,
                 ) { v -> set { copy(offsetX = v) } }
                 if (!s.notch) {
-                    GroupStepSlider(Pos.Middle, Icons.Rounded.SwapVert, tr("Отступ сверху", "Top offset"), s.offsetY, -10..120, color = Tile.Indigo) { v ->
+                    GroupStepSlider(Pos.Middle, Icons.Rounded.SwapVert, tr("Отступ сверху", "Distância do topo"), s.offsetY, -10..120, color = Tile.Indigo) { v ->
                         set { copy(offsetY = v) }
                     }
                 }
                 GroupToggle(
-                    Pos.Last, Icons.Rounded.WaterDrop, tr("Как вырез", "Like a notch"),
+                    Pos.Last, Icons.Rounded.WaterDrop, tr("Как вырез", "Como um notch"),
                     tr("Для камеры-капли: остров прилегает к верху экрана и закрывает вырез",
-                        "For a waterdrop camera: the island sits against the top of the screen and covers the notch"),
+                        "Para câmera em gota: a ilha fica rente ao topo da tela e cobre o recorte"),
                     s.notch, color = Tile.Teal,
                 ) { v -> set { copy(notch = v) } }
             }
             Spacer(Modifier.height(16.dp))
             Group {
-                GroupStepSlider(Pos.First, Icons.Rounded.Straighten, tr("Ширина", "Width"), s.width, 70..170, color = Tile.Purple) { v ->
+                GroupStepSlider(Pos.First, Icons.Rounded.Straighten, tr("Ширина", "Largura"), s.width, 70..170, color = Tile.Purple) { v ->
                     set { copy(width = v) }
                 }
-                GroupStepSlider(Pos.Last, Icons.Rounded.Height, tr("Высота", "Height"), s.height, 22..46, color = Tile.Pink) { v ->
+                GroupStepSlider(Pos.Last, Icons.Rounded.Height, tr("Высота", "Altura"), s.height, 22..46, color = Tile.Pink) { v ->
                     set { copy(height = v) }
                 }
             }
@@ -134,7 +134,7 @@ fun SizeScreen(onBack: () -> Unit) {
         ) {
             Icon(Icons.Rounded.Check, null, tint = Ui.OnPrimary, modifier = Modifier.size(22.dp))
             Spacer(Modifier.width(8.dp))
-            Text(tr("Сохранить", "Save"), color = Ui.OnPrimary, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("Сохранить", "Salvar"), color = Ui.OnPrimary, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
         }
     }
 }

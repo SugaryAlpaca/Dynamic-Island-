@@ -74,79 +74,79 @@ import kotlinx.coroutines.launch
 @Composable
 fun InstructionScreen(onBack: () -> Unit) {
     val context = LocalContext.current
-    Page(tr("Инструкция", "Instructions"), onBack) {
-        Step(1, tr("Спец. возможности", "Accessibility"),
+    Page(tr("Инструкция", "Instruções"), onBack) {
+        Step(1, tr("Спец. возможности", "Acessibilidade"),
             tr(
                 "Откройте «Настройки → Спец. возможности → Установленные приложения → Динамический остров» и включите службу. " +
                     "Только такая служба может рисовать поверх строки состояния, рядом с камерой.",
-                "Open Settings → Accessibility → Installed apps → Dynamic Island and turn the service on. Only such a " +
-                    "service can draw over the status bar, next to the camera.",
+                "Abra Configurações → Acessibilidade → Apps instalados → Ilha Dinâmica e ative o serviço. Só um " +
+                    "serviço assim pode desenhar sobre a barra de status, ao lado da câmera.",
             ))
-        Step(2, tr("Если переключатель серый (Android 13+)", "If the switch is grayed out (Android 13+)"), restrictedHelp())
-        Row { PillAction(tr("Открыть «О приложении»", "Open App info")) { Perms.openAppDetails(context) } }
-        Step(3, tr("Доступ к уведомлениям", "Notification access"),
+        Step(2, tr("Если переключатель серый (Android 13+)", "Se a chave estiver cinza (Android 13+)"), restrictedHelp())
+        Row { PillAction(tr("Открыть «О приложении»", "Abrir Informações do app")) { Perms.openAppDetails(context) } }
+        Step(3, tr("Доступ к уведомлениям", "Acesso às notificações"),
             tr(
                 "Нужен для карточек музыки, прогресса загрузок и таймеров/секундомеров Google Часов. " +
                     "Остров не хранит и никуда не отправляет уведомления.",
-                "Needed for the music, download progress and Google Clock timer and stopwatch cards. The island doesn't " +
-                    "store or send notifications anywhere.",
+                "Necessário para os cartões de música, progresso de downloads e timer e cronômetro do Google Relógio. A ilha não " +
+                    "guarda nem envia notificações para lugar nenhum.",
             ))
-        Row { PillAction(tr("Открыть доступ к уведомлениям", "Open notification access")) { Perms.openNotifications(context) } }
-        Step(4, tr("Звонки", "Calls"),
+        Row { PillAction(tr("Открыть доступ к уведомлениям", "Abrir acesso às notificações")) { Perms.openNotifications(context) } }
+        Step(4, tr("Звонки", "Chamadas"),
             tr(
                 "На вкладке «Главная» откройте «Разрешения» → «Звонки» и разрешите доступ к телефону, журналу звонков и контактам. " +
                     "Тогда остров покажет входящий вызов с любой звонилкой, подпишет имя из контактов, " +
                     "а кнопки «ответить» и «сбросить» будут работать.",
-                "On the Home tab open Permissions → Calls and allow access to the phone, call log and contacts. Then the " +
-                    "island shows incoming calls with any dialer, shows the name from your contacts, and the answer and " +
-                    "decline buttons work.",
+                "Na aba Início, abra Permissões → Chamadas e permita o acesso ao telefone, ao registro de chamadas e aos contatos. Assim a " +
+                    "ilha mostra as chamadas recebidas com qualquer app de telefone, exibe o nome dos seus contatos, e os " +
+                    "botões de atender e recusar funcionam.",
             ))
-        Step(5, tr("Поставьте капсулу над камерой", "Place the capsule over the camera"),
+        Step(5, tr("Поставьте капсулу над камерой", "Posicione a cápsula sobre a câmera"),
             tr(
                 "Вкладка «Оформление» → «Положение и размер». Пока экран открыт, остров красный: " +
                     "сдвиньте его, пока красное не окажется ровно над камерой, подберите ширину и высоту и нажмите «Сохранить».",
-                "Appearance tab → Position and size. While the screen is open, the island is red: move it until the red sits " +
-                    "exactly over the camera, pick the width and height and tap “Save”.",
+                "Aba Aparência → Posição e tamanho. Enquanto a tela estiver aberta, a ilha fica vermelha: mova-a até o vermelho ficar " +
+                    "exatamente sobre a câmera, ajuste a largura e a altura e toque em “Salvar”.",
             ))
-        Step(6, tr("Батарея (Xiaomi, Huawei, Samsung…)", "Battery (Xiaomi, Huawei, Samsung…)"),
+        Step(6, tr("Батарея (Xiaomi, Huawei, Samsung…)", "Bateria (Xiaomi, Huawei, Samsung…)"),
             tr(
                 "Если остров пропадает, разрешите приложению автозапуск и снимите ограничения батареи — " +
                     "иначе прошивка выгружает службу.",
-                "If the island disappears, allow the app to autostart and remove battery restrictions — otherwise the " +
-                    "firmware kills the service.",
+                "Se a ilha sumir, permita o início automático do app e remova as restrições de bateria — senão o " +
+                    "sistema encerra o serviço.",
             ))
         Row {
-            PillAction(tr("Батарея", "Battery")) { Perms.openBattery(context) }
+            PillAction(tr("Батарея", "Bateria")) { Perms.openBattery(context) }
             if (Perms.hasAutostart()) {
                 Spacer(Modifier.width(8.dp))
-                PillAction(tr("Автозапуск", "Autostart")) { Perms.openAutostart(context) }
+                PillAction(tr("Автозапуск", "Início automático")) { Perms.openAutostart(context) }
             }
         }
-        Step(7, tr("Ответ на сообщения и оплата", "Replies and payments"),
+        Step(7, tr("Ответ на сообщения и оплата", "Respostas e pagamentos"),
             tr(
                 "Под уведомлением от мессенджера стоят кнопки из самого уведомления. «Ответить» открывает строку ввода прямо в острове. " +
                     "Когда приложение оплаты показывает экран оплаты телефоном, остров показывает «К терминалу», а после оплаты — галочку с суммой. " +
                     "Всё это можно попробовать: «Главная» → «Проверка».",
-                "Under a messenger notification you get the notification's own buttons. “Reply” opens an input field right" +
-                    " in the island. When a payment app shows its phone payment screen, the island shows “Hold near reader”, " +
-                    "and after paying — a check mark with the amount. You can try all of this: Home → Try it.",
+                "Sob a notificação de um mensageiro ficam os próprios botões da notificação. “Responder” abre um campo de texto direto" +
+                    " na ilha. Quando um app de pagamento mostra a tela de pagamento por aproximação, a ilha mostra “Aproxime do leitor”, " +
+                    "e depois de pagar — um ícone de confirmação com o valor. Você pode testar tudo isso: Início → Testar.",
             ))
-        Step(8, tr("Навигатор", "Navigation"),
+        Step(8, tr("Навигатор", "Navegação"),
             tr(
                 "Пока открыт навигатор (2ГИС, Яндекс Навигатор, Карты и др.), остров читает с его экрана расстояние до манёвра, " +
                     "улицу и время прибытия, а стрелку поворота узнаёт по картинке. Экран других приложений не читается. " +
                     "Если после обновления остров пропал, выключите и снова включите его в спец. возможностях.",
-                "While a navigation app is open (2GIS, Yandex Navigator, Maps and others), the island reads the distance " +
-                    "to the next turn, the street and the arrival time from its screen, and recognizes the turn arrow from the" +
-                    " picture. Other apps' screens aren't read. If the island disappears after an update, turn it off and on " +
-                    "again in Accessibility.",
+                "Enquanto um app de navegação estiver aberto (2GIS, Yandex Navigator, Maps e outros), a ilha lê na tela dele a distância " +
+                    "até a próxima curva, a rua e o horário de chegada, e reconhece a seta da curva pela" +
+                    " imagem. A tela de outros apps não é lida. Se a ilha sumir depois de uma atualização, desative e ative " +
+                    "de novo em Acessibilidade.",
             ))
-        Step(9, tr("Жесты", "Gestures"),
+        Step(9, tr("Жесты", "Gestos"),
             tr(
                 "Нажатие — раскрыть, потянуть вниз — раскрыть, вверх или касание вне острова — свернуть, " +
                     "толкнуть вбок — следующий/предыдущий трек, нажатие на пузырь — раскрыть вторую активность.",
-                "Tap — expand, pull down — expand, pull up or touch outside the island — collapse, push sideways — next or" +
-                    " previous track, tap the bubble — expand the second activity.",
+                "Toque — expande, puxar para baixo — expande, puxar para cima ou tocar fora da ilha — recolhe, empurrar para o lado — próxima ou" +
+                    " faixa anterior, toque na bolha — expande a segunda atividade.",
             ))
     }
 }
@@ -189,46 +189,46 @@ fun AppInfoScreen(open: (Screen) -> Unit) {
     val version = remember { UpdateChecker.currentVersion(context) }
     var notes by remember { mutableStateOf(false) }
 
-    Page(tr("О приложении", "About")) {
+    Page(tr("О приложении", "Sobre")) {
         AppHeader(version, update)
         UpdateSection()
 
-        SectionHeader(tr("Обновления", "Updates"))
+        SectionHeader(tr("Обновления", "Atualizações"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.SystemUpdate, tr("Искать обновления", "Check for updates"),
-                tr("Раз в 3 часа смотреть на GitHub, не вышла ли новая версия", "Look on GitHub every 3 hours for a new version"),
+            GroupToggle(Pos.First, Icons.Rounded.SystemUpdate, tr("Искать обновления", "Verificar atualizações"),
+                tr("Раз в 3 часа смотреть на GitHub, не вышла ли новая версия", "Procurar no GitHub a cada 3 horas se saiu uma versão nova"),
                 s.autoUpdateCheck, color = Tile.Green) { v ->
                 SettingsRepo.update { copy(autoUpdateCheck = v) }
             }
-            GroupItem(Pos.Middle, Icons.Rounded.Refresh, tr("Проверить сейчас", "Check now"), updateStatusText(update, version),
+            GroupItem(Pos.Middle, Icons.Rounded.Refresh, tr("Проверить сейчас", "Verificar agora"), updateStatusText(update, version),
                 onClick = { scope.launch { UpdateChecker.check(context.applicationContext, force = true) } }, color = Tile.Blue)
-            GroupItem(Pos.Last, Icons.Rounded.NewReleases, tr("Что нового", "What's new"), tr("Изменения в версии $version", "Changes in version $version"),
+            GroupItem(Pos.Last, Icons.Rounded.NewReleases, tr("Что нового", "Novidades"), tr("Изменения в версии $version", "Mudanças na versão $version"),
                 onClick = { notes = true }, color = Tile.Purple) { Arrow() }
         }
 
-        SectionHeader(tr("Помощь", "Help"))
+        SectionHeader(tr("Помощь", "Ajuda"))
         Group {
-            GroupItem(Pos.First, Icons.Rounded.Lightbulb, tr("Инструкция", "Instructions"),
-                tr("Как включить остров на Android 13+", "How to turn the island on with Android 13+"),
+            GroupItem(Pos.First, Icons.Rounded.Lightbulb, tr("Инструкция", "Instruções"),
+                tr("Как включить остров на Android 13+", "Como ligar a ilha no Android 13+"),
                 onClick = { open(Screen.INSTRUCTION) }, color = Tile.Yellow) { Arrow() }
             KeepAliveItem(Pos.Middle, open)
-            GroupItem(Pos.Middle, Icons.Rounded.Navigation, tr("Диагностика навигации", "Navigation diagnostics"),
+            GroupItem(Pos.Middle, Icons.Rounded.Navigation, tr("Диагностика навигации", "Diagnóstico de navegação"),
                 tr("Что присылает навигатор, такси или доставка — если не видно расстояния",
-                    "What a navigation, taxi or delivery app sends — if the distance doesn't show"),
+                    "O que um app de navegação, táxi ou entrega envia — se a distância não aparece"),
                 onClick = { open(Screen.DIAG) }, color = Tile.Teal) { Arrow() }
-            GroupItem(Pos.Middle, Icons.Rounded.CreditCard, tr("Диагностика оплаты", "Payment diagnostics"),
-                tr("Что остров увидел при оплате — если «Оплачено» не появилось", "What the island saw when you paid — if “Paid” didn't show"),
+            GroupItem(Pos.Middle, Icons.Rounded.CreditCard, tr("Диагностика оплаты", "Diagnóstico de pagamento"),
+                tr("Что остров увидел при оплате — если «Оплачено» не появилось", "O que a ilha viu quando você pagou — se “Pago” não apareceu"),
                 onClick = { open(Screen.PAYDIAG) }, color = Tile.Green) { Arrow() }
             AppDetailsItem(Pos.Last)
         }
 
-        SectionHeader(tr("Проект", "Project"))
+        SectionHeader(tr("Проект", "Projeto"))
         Group {
-            GroupItem(Pos.First, ImageVector.vectorResource(R.drawable.ic_github), tr("Страница GitHub", "GitHub page"),
-                tr("Описание, новые версии и исходный код", "Description, new versions and source code"),
+            GroupItem(Pos.First, ImageVector.vectorResource(R.drawable.ic_github), tr("Страница GitHub", "Página do GitHub"),
+                tr("Описание, новые версии и исходный код", "Descrição, novas versões e código-fonte"),
                 onClick = { openGithub(context) }, color = GithubPurple) { Arrow() }
-            GroupItem(Pos.Last, Icons.Rounded.Info, tr("Об острове", "About the island"),
-                tr("Что умеет и откуда идея", "What it does and where the idea comes from"),
+            GroupItem(Pos.Last, Icons.Rounded.Info, tr("Об острове", "Sobre a ilha"),
+                tr("Что умеет и откуда идея", "O que ela faz e de onde veio a ideia"),
                 onClick = { open(Screen.ABOUT) }, color = Tile.Indigo) { Arrow() }
         }
     }
@@ -248,13 +248,13 @@ private fun AppHeader(version: String, update: UpdateState) {
             Image(ImageVector.vectorResource(R.drawable.ic_launcher_foreground), null, Modifier.requiredSize(126.dp))
         }
         Spacer(Modifier.height(14.dp))
-        Text(tr("Динамический остров", "Dynamic Island"), color = Ui.Text, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-        Text(tr("Версия $version", "Version $version"), color = Ui.Sub, fontSize = 15.sp, modifier = Modifier.padding(top = 2.dp))
+        Text(tr("Динамический остров", "Ilha Dinâmica"), color = Ui.Text, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        Text(tr("Версия $version", "Versão $version"), color = Ui.Sub, fontSize = 15.sp, modifier = Modifier.padding(top = 2.dp))
         val (label, color) = when (update) {
-            UpdateState.UpToDate -> tr("Последняя версия", "Up to date") to Tints.Green
-            is UpdateState.Available -> tr("Доступна версия ${update.release.version}", "Version ${update.release.version} is available") to Ui.Primary
-            UpdateState.Checking -> tr("Проверяю обновления…", "Checking for updates…") to Ui.Sub
-            is UpdateState.Error -> tr("Не удалось проверить обновления", "Couldn't check for updates") to Tints.Orange
+            UpdateState.UpToDate -> tr("Последняя версия", "Atualizado") to Tints.Green
+            is UpdateState.Available -> tr("Доступна версия ${update.release.version}", "A versão ${update.release.version} está disponível") to Ui.Primary
+            UpdateState.Checking -> tr("Проверяю обновления…", "Verificando atualizações…") to Ui.Sub
+            is UpdateState.Error -> tr("Не удалось проверить обновления", "Não foi possível verificar atualizações") to Tints.Orange
             UpdateState.Idle -> null to Ui.Sub
         }
         if (label != null) {
@@ -270,40 +270,40 @@ private fun AppHeader(version: String, update: UpdateState) {
 /** «Об острове»: что он умеет, откуда идея и как устроен. */
 @Composable
 fun IdeaScreen(onBack: () -> Unit) {
-    Page(tr("Об острове", "About the island"), onBack) {
+    Page(tr("Об острове", "Sobre a ilha"), onBack) {
         IslandPreview()
-        SectionHeader(tr("Что умеет", "What it does"))
+        SectionHeader(tr("Что умеет", "O que ela faz"))
         InfoText(
             tr(
                 "Капсула в духе iPhone над камерой Android: музыка с обложкой, эквалайзером и синхронным текстом песен, " +
                     "таймер с кольцом остатка, секундомер, прогресс загрузок, фонарик с регулировкой яркости, " +
                     "уведомления с ответом, оплата, навигация, зарядка и системные события. Вторая активность уходит в пузырь рядом с островом.",
-                "An iPhone-style capsule over your Android camera: music with artwork, an equalizer and synced lyrics, a " +
-                    "timer with a progress ring, a stopwatch, download progress, a flashlight with brightness control, " +
-                    "notifications with replies, payments, navigation, charging and system events. A second activity goes into" +
-                    " a bubble next to the island.",
+                "Uma cápsula no estilo iPhone sobre a câmera do seu Android: música com capa, equalizador e letra sincronizada, " +
+                    "timer com anel de progresso, cronômetro, progresso de downloads, lanterna com controle de brilho, " +
+                    "notificações com resposta, pagamentos, navegação, carregamento e eventos do sistema. Uma segunda atividade vai para" +
+                    " uma bolha ao lado da ilha.",
             ),
         )
-        SectionHeader(tr("Откуда идея", "Where the idea comes from"))
+        SectionHeader(tr("Откуда идея", "De onde veio a ideia"))
         InfoText(
             tr(
                 "Идея и поведение перенесены с ПК-версии Dynamic Island для Windows (github.com/mihailkotovski/DynamicIsland): " +
                     "пружинные анимации формы, плеер по клику, толчок вбок для смены трека, таймер от 1 до 99 минут " +
                     "с кольцом вокруг паузы и звонком, текст песен с LRCLIB.",
-                "The idea and behavior come from the PC version, Dynamic Island for Windows " +
-                    "(github.com/mihailkotovski/DynamicIsland): spring shape animations, the player on click, a sideways push " +
-                    "to change tracks, a 1 to 99 minute timer with a ring around pause and an alarm, lyrics from LRCLIB.",
+                "A ideia e o comportamento vêm da versão para PC, Dynamic Island para Windows " +
+                    "(github.com/mihailkotovski/DynamicIsland): animações de forma com efeito de mola, o player ao clicar, um empurrão para o lado " +
+                    "para trocar de faixa, timer de 1 a 99 minutos com um anel em volta da pausa e um alarme, letras do LRCLIB.",
             ),
         )
-        SectionHeader(tr("Как устроено", "How it works"))
+        SectionHeader(tr("Как устроено", "Como funciona"))
         InfoText(
             tr(
                 "Капсула рисуется службой спец. возможностей, данные о музыке берутся из системных медиасессий, " +
                     "прогресс и таймеры — из уведомлений. Анимации идут, только пока капсула что-то показывает; " +
                     "«Уменьшить эффекты» выключает эквалайзер и «желе».",
-                "The capsule is drawn by an accessibility service, music data comes from the system media sessions, " +
-                    "progress and timers from notifications. Animations run only while the capsule shows something; Reduce " +
-                    "effects turns off the equalizer and the jelly.",
+                "A cápsula é desenhada por um serviço de acessibilidade, os dados de música vêm das sessões de mídia do sistema, " +
+                    "e o progresso e os timers vêm das notificações. As animações rodam só enquanto a cápsula mostra algo; Reduzir " +
+                    "efeitos desliga o equalizador e o efeito de gelatina.",
             ),
         )
     }
@@ -325,16 +325,16 @@ internal fun InfoText(text: String) {
 fun DiagScreen(onBack: () -> Unit) {
     val dumps by LiveDebug.dumps.collectAsState()
     DumpScreen(
-        tr("Диагностика навигации", "Navigation diagnostics"),
+        tr("Диагностика навигации", "Diagnóstico de navegação"),
         tr(
             "Включите навигатор, такси или доставку и вернитесь сюда: ниже то, что приложение присылает в уведомлении. " +
                 "Если расстояние или стрелка поворота не показываются в острове, нажмите «Скопировать» и пришлите этот текст.",
-            "Start a navigation, taxi or delivery app and come back here: below is what the app sends in its " +
-                "notification. If the distance or the turn arrow doesn't show in the island, tap “Copy all” and send this " +
-                "text.",
+            "Abra um app de navegação, táxi ou entrega e volte aqui: abaixo está o que o app envia na " +
+                "notificação. Se a distância ou a seta da curva não aparecer na ilha, toque em “Copiar tudo” e envie este " +
+                "texto.",
         ),
         tr("Пока ничего нет: ни одного уведомления навигатора, такси или доставки не пришло.",
-            "Nothing yet: no navigation, taxi or delivery notification has arrived."),
+            "Nada por enquanto: nenhuma notificação de navegação, táxi ou entrega chegou."),
         dumps.values.toList(), onBack,
     )
 }
@@ -347,17 +347,17 @@ fun DiagScreen(onBack: () -> Unit) {
 fun PayDiagScreen(onBack: () -> Unit) {
     val log by PayDebug.log.collectAsState()
     DumpScreen(
-        tr("Диагностика оплаты", "Payment diagnostics"),
+        tr("Диагностика оплаты", "Diagnóstico de pagamento"),
         tr(
             "Заплатите телефоном и вернитесь сюда: ниже — что остров увидел (экран оплаты, уведомление или СМС банка) " +
                 "и как понял. Если «Оплачено» не появилось, нажмите «Скопировать» и пришлите текст. Записи хранятся " +
                 "только в памяти телефона и пропадают после перезапуска.",
-            "Pay with your phone and come back here: below is what the island saw (the payment screen, a bank " +
-                "notification or SMS) and how it understood it. If “Paid” didn't show, tap “Copy all” and send the text. " +
-                "Entries stay only in the phone's memory and are gone after a restart.",
+            "Pague com o celular e volte aqui: abaixo está o que a ilha viu (a tela de pagamento, uma notificação " +
+                "ou SMS do banco) e como ela interpretou. Se “Pago” não apareceu, toque em “Copiar tudo” e envie o texto. " +
+                "Os registros ficam só na memória do celular e somem após reiniciar.",
         ),
         tr("Пока ничего нет: остров не видел ни экрана оплаты, ни уведомлений банков.",
-            "Nothing yet: the island hasn't seen a payment screen or a bank notification."),
+            "Nada por enquanto: a ilha não viu nenhuma tela de pagamento nem notificação de banco."),
         log, onBack,
     )
 }
@@ -371,7 +371,7 @@ private fun DumpScreen(title: String, intro: String, empty: String, items: List<
             Text(empty, color = Ui.Sub, fontSize = 14.sp, modifier = Modifier.padding(horizontal = 8.dp))
         } else {
             Row {
-                PillAction(tr("Скопировать всё", "Copy all")) {
+                PillAction(tr("Скопировать всё", "Copiar tudo")) {
                     // Суммы и тексты банков: Android 13+ не показывает такой буфер обмена во всплывающем превью
                     val clip = ClipData.newPlainText(title, items.joinToString("\n\n"))
                     clip.description.extras = PersistableBundle().apply { putBoolean("android.content.extra.IS_SENSITIVE", true) }

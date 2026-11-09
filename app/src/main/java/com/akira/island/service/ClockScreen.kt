@@ -60,16 +60,16 @@ enum class ClockAction { START, PAUSE, RESET }
 
 /** Подписи кнопок «Часов» — для нажатий на экране, кнопок уведомления и поиска кнопки, которую нажмёт остров. */
 object ClockWords {
-    private val start = listOf("старт", "start", "начать", "пуск", "запуст", "продолж", "возобнов", "resume")
-    private val pause = setOf("пауза", "pause", "стоп", "stop")
-    private val reset = listOf("сброс", "reset", "удал", "delete", "отмен", "cancel", "очист", "clear")
+    private val start = listOf("старт", "start", "начать", "пуск", "запуст", "продолж", "возобнов", "resume", "inicia", "retom", "continu")
+    private val pause = setOf("пауза", "pause", "стоп", "stop", "pausa", "pausar", "parar")
+    private val reset = listOf("сброс", "reset", "удал", "delete", "отмен", "cancel", "очист", "clear", "zerar", "redefin", "exclu", "limp")
     private val nonLetters = Regex("[^\\p{L}]+")
 
     /** Кнопки на экране «Часов», которые остров ищет и нажимает сам, — подпись целиком. */
     val labels = mapOf(
-        ClockAction.START to listOf("Старт", "Начать", "Продолжить", "Пуск", "Возобновить", "Start", "Resume"),
-        ClockAction.PAUSE to listOf("Пауза", "Стоп", "Pause", "Stop"),
-        ClockAction.RESET to listOf("Сбросить", "Сброс", "Удалить", "Reset", "Delete"),
+        ClockAction.START to listOf("Старт", "Начать", "Продолжить", "Пуск", "Возобновить", "Start", "Resume", "Iniciar", "Retomar", "Continuar"),
+        ClockAction.PAUSE to listOf("Пауза", "Стоп", "Pause", "Stop", "Pausar", "Parar"),
+        ClockAction.RESET to listOf("Сбросить", "Сброс", "Удалить", "Reset", "Delete", "Redefinir", "Zerar", "Excluir"),
     )
 
     /** По началу слова; «стоп» — только целым словом, иначе совпадёт «Stopwatch». */
@@ -663,7 +663,7 @@ class ClockScreenReader(private val service: AccessibilityService, private val s
         }
         if (w != null) {
             val old = map[STOPWATCH_KEY]
-            map[STOPWATCH_KEY] = ChronoInfo(STOPWATCH_KEY, pkg, tr("Секундомер · $label", "Stopwatch · $label"), icon, w.base, false,
+            map[STOPWATCH_KEY] = ChronoInfo(STOPWATCH_KEY, pkg, tr("Секундомер · $label", "Cronômetro · $label"), icon, w.base, false,
                 old?.postTime ?: System.currentTimeMillis(), pausedMs = w.pausedMs)
         } else {
             map.remove(STOPWATCH_KEY)
@@ -708,7 +708,7 @@ class ClockScreenReader(private val service: AccessibilityService, private val s
         private const val TIMER_KEY = KEY_PREFIX + "timer"
         private const val STOPWATCH_KEY = KEY_PREFIX + "stopwatch"
         private val TIMER_TABS = listOf("Таймер", "Timer")
-        private val STOPWATCH_TABS = listOf("Секундомер", "Stopwatch")
+        private val STOPWATCH_TABS = listOf("Секундомер", "Stopwatch", "Cronômetro")
     }
 }
 

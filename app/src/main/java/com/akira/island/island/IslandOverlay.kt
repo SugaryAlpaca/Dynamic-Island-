@@ -238,7 +238,8 @@ fun IslandOverlay(
         val m = media
         if (s.cardMedia && m != null && !(s.hideWhenPlayerOpen && foreground == m.pkg)) persistent += Act.MediaA(m)
         if (s.cardProgress) progress.values.maxByOrNull { it.postTime }?.let { persistent += Act.ProgressA(it) }
-        if (s.cardCharging && battery.charging) persistent += Act.ChargingA(battery)
+        // Carregando: o aviso ao plugar o carregador (evChargeStart) aparece e some sozinho; o cartão fixo,
+        // que ficava na ilha durante toda a carga, foi removido.
         // Будильник — тише всех: показывается, только когда больше ничего нет, и не уходит в пузырь
         val alarm = nextAlarm
         if (s.cardAlarm && alarm != null && alarm.triggerAt - alarmNow in 1..ALARM_LEAD_MS) persistent += Act.AlarmA(alarm)

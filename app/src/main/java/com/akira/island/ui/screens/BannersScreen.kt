@@ -50,7 +50,7 @@ fun BannersScreen(onBack: () -> Unit) {
     val popUp by SystemBanners.popUp.collectAsState()
     val messengers = remember(s.msgChannels) { s.msgChannels.keys.sortedBy { SystemBanners.label(context, it).lowercase() } }
 
-    Page(tr("Системные плашки", "System banners"), onBack) {
+    Page(tr("Системные плашки", "Banners do sistema"), onBack) {
         Box(
             Modifier.fillMaxWidth().padding(top = 8.dp).clip(RoundedCornerShape(24.dp)).background(Ui.Card)
                 .padding(horizontal = 20.dp, vertical = 16.dp),
@@ -60,18 +60,18 @@ fun BannersScreen(onBack: () -> Unit) {
                     "Android показывает свои всплывающие плашки поверх острова, и запретить их стороннему приложению система не даёт. " +
                         "Нажмите на приложение и выключите «Всплывающие уведомления» (на некоторых телефонах — «Показывать поверх других» " +
                         "или «Баннеры»). Уведомление останется в шторке, а на экране событие покажет только остров.",
-                    "Android shows its own pop-up banners on top of the island, and the system doesn't let a third-party app " +
-                        "block them. Tap an app and turn off “Pop on screen” (on some phones — “Show on top” or “Banners”). The " +
-                        "notification stays in the shade, and only the island shows the event on screen.",
+                    "O Android mostra seus próprios banners pop-up por cima da ilha, e o sistema não deixa um app de terceiros " +
+                        "bloqueá-los. Toque em um app e desative “Exibir na tela” (em alguns celulares — “Mostrar por cima” ou “Banners”). A " +
+                        "notificação continua na barra de notificações, e só a ilha mostra o evento na tela.",
                 ),
                 color = Ui.Sub, fontSize = 15.sp, lineHeight = 20.sp,
             )
         }
 
         // Сообщения приходят и плашкой острова, и своей всплывающей — две сразу
-        SectionHeader(tr("Мессенджеры", "Messengers"))
+        SectionHeader(tr("Мессенджеры", "Mensageiros"))
         if (messengers.isEmpty()) {
-            GroupItem(Pos.Single, Icons.Rounded.ChatBubble, tr("Пока ни одно сообщение не пришло в остров", "No message has reached the island yet"),
+            GroupItem(Pos.Single, Icons.Rounded.ChatBubble, tr("Пока ни одно сообщение не пришло в остров", "Nenhuma mensagem chegou na ilha ainda"),
                 color = Tile.Gray)
         } else {
             Group {
@@ -80,9 +80,9 @@ fun BannersScreen(onBack: () -> Unit) {
                         posOf(i, messengers.size), Icons.Rounded.ChatBubble, SystemBanners.label(context, pkg),
                         when (popUp[pkg]) {
                             true -> tr("Всплывает поверх острова — нажмите и выключите «Всплывающие»",
-                                "Pops up over the island — tap and turn off “Pop on screen”")
-                            false -> tr("Своя плашка не всплывает ✓", "Its own banner doesn't pop up ✓")
-                            null -> tr("Нажмите и выключите «Всплывающие уведомления»", "Tap and turn off “Pop on screen”")
+                                "Aparece por cima da ilha — toque e desative “Exibir na tela”")
+                            false -> tr("Своя плашка не всплывает ✓", "O banner próprio não aparece ✓")
+                            null -> tr("Нажмите и выключите «Всплывающие уведомления»", "Toque e desative “Exibir na tela”")
                         },
                         color = if (popUp[pkg] == false) Tile.Green else Tile.Blue,
                         onClick = { SystemBanners.openSettings(context, pkg) },
@@ -93,51 +93,51 @@ fun BannersScreen(onBack: () -> Unit) {
         Text(
             tr(
                 "Если выключить всплывающие у мессенджера, а остров потом выключить или скрыть, сообщения будут только в шторке.",
-                "If you turn off a messenger's pop-ups and then turn the island off or hide it, messages will only be in the shade.",
+                "Se você desativar os pop-ups de um mensageiro e depois desligar ou ocultar a ilha, as mensagens ficarão só na barra de notificações.",
             ),
             color = Ui.Sub, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp),
         )
 
-        SectionHeader(tr("Звонки", "Calls"))
+        SectionHeader(tr("Звонки", "Chamadas"))
         AppList(calls, Icons.Rounded.Call, Tile.Green,
-            tr("Канал входящих вызовов. Экран при звонке включит сам остров", "The incoming calls channel. The island turns the screen on for calls itself"),
+            tr("Канал входящих вызовов. Экран при звонке включит сам остров", "O canal de chamadas recebidas. A própria ilha liga a tela quando há uma chamada"),
             tr("Звонилки не нашлось — позвоните себе, и она появится здесь",
-                "No dialer found — call yourself and it will show up here")) { SystemBanners.openSettings(context, it) }
+                "Nenhum app de telefone encontrado — ligue para você mesmo e ele aparecerá aqui")) { SystemBanners.openSettings(context, it) }
 
-        SectionHeader(tr("Таймеры и будильники", "Timers and alarms"))
+        SectionHeader(tr("Таймеры и будильники", "Timers e alarmes"))
         AppList(clocks, Icons.Rounded.Alarm, Tile.Orange,
-            tr("Сигнал таймера и будильника", "Timer and alarm alerts"),
-            tr("Приложение «Часы» не нашлось", "No Clock app found")) { SystemBanners.openSettings(context, it) }
+            tr("Сигнал таймера и будильника", "Avisos de timer e alarme"),
+            tr("Приложение «Часы» не нашлось", "Nenhum app Relógio encontrado")) { SystemBanners.openSettings(context, it) }
         Text(
             tr(
                 "Совет: не выключайте уведомления «Часов» целиком — выберите «Без звука» и «Свернуть» (или выключите только " +
                     "«Всплывающие»). Тогда таймер и секундомер появятся в острове мгновенно, а его кнопки будут работать, " +
                     "не открывая «Часы». Если уведомления выключены совсем, остров узнаёт таймер с экрана «Часов», " +
                     "а кнопки нажимает сам, на мгновение открывая приложение.",
-                "Tip: don't turn off Clock's notifications completely — choose “Silent” and “Minimize” (or turn off only " +
-                    "“Pop on screen”). Then the timer and stopwatch show up in the island instantly, and its buttons work " +
-                    "without opening Clock. If the notifications are fully off, the island reads the timer from the Clock " +
-                    "screen and presses the buttons itself, opening the app for a moment.",
+                "Dica: não desative por completo as notificações do Relógio — escolha “Silencioso” e “Minimizar” (ou desative só " +
+                    "“Exibir na tela”). Assim o timer e o cronômetro aparecem na ilha na hora, e os botões dela funcionam " +
+                    "sem abrir o Relógio. Se as notificações estiverem totalmente desativadas, a ilha lê o timer na tela " +
+                    "do Relógio e aperta os botões sozinha, abrindo o app por um instante.",
             ),
             color = Ui.Sub, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp),
         )
 
-        SectionHeader(tr("Батарея и зарядка", "Battery and charging"))
+        SectionHeader(tr("Батарея и зарядка", "Bateria e carregamento"))
         Group {
             GroupItem(Pos.First, Icons.Rounded.BatteryAlert, SystemBanners.label(context, SystemBanners.SYSTEM_UI),
                 tr("«Батарея разряжена» — канал «Батарея». У некоторых прошивок система менять его не даёт",
-                    "“Battery low” — the Battery channel. Some firmwares don't let you change it"),
+                    "“Bateria fraca” — o canal Bateria. Alguns sistemas não deixam alterá-lo"),
                 color = Tile.Red, onClick = { SystemBanners.openSettings(context, SystemBanners.SYSTEM_UI) }) { Arrow() }
             GroupItem(Pos.Last, Icons.Rounded.Usb, SystemBanners.label(context, SystemBanners.ANDROID),
-                tr("Зарядка через USB и другие сообщения системы", "USB charging and other system messages"),
+                tr("Зарядка через USB и другие сообщения системы", "Carregamento por USB e outras mensagens do sistema"),
                 color = Tile.Gray, onClick = { SystemBanners.openSettings(context, SystemBanners.ANDROID) }) { Arrow() }
         }
         Text(
             tr(
                 "Анимацию зарядки, которую рисует сама прошивка (Xiaomi, Samsung и др.), отключают в настройках экрана блокировки " +
                     "или батареи телефона, если производитель это позволяет.",
-                "The charging animation drawn by the firmware itself (Xiaomi, Samsung and others) is turned off in the " +
-                    "phone's lock screen or battery settings, if the manufacturer allows it.",
+                "A animação de carregamento desenhada pelo próprio sistema (Xiaomi, Samsung e outros) é desativada nas " +
+                    "configurações de tela de bloqueio ou de bateria do celular, se o fabricante permitir.",
             ),
             color = Ui.Sub, fontSize = 13.sp, lineHeight = 17.sp, modifier = Modifier.padding(horizontal = 8.dp, vertical = 10.dp),
         )

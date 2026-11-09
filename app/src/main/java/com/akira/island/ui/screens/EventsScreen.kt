@@ -40,78 +40,78 @@ fun EventsScreen(onBack: () -> Unit) {
     val s by SettingsRepo.state.collectAsState()
     fun set(block: IslandSettings.() -> IslandSettings) = SettingsRepo.update(block)
 
-    Page(tr("События", "Events"), onBack) {
-        SectionHeader(tr("Батарея", "Battery"))
+    Page(tr("События", "Eventos"), onBack) {
+        SectionHeader(tr("Батарея", "Bateria"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.Bolt, tr("Зарядка началась", "Charging started"), null,
+            GroupToggle(Pos.First, Icons.Rounded.Bolt, tr("Зарядка началась", "Carregamento iniciado"), null,
                 s.evChargeStart, color = Tile.Green) { set { copy(evChargeStart = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.PowerOff, tr("Зарядка остановлена", "Charging stopped"), null,
+            GroupToggle(Pos.Middle, Icons.Rounded.PowerOff, tr("Зарядка остановлена", "Carregamento interrompido"), null,
                 s.evChargeStop, color = Tile.Gray) { set { copy(evChargeStop = it) } }
-            GroupToggle(Pos.Last, Icons.Rounded.BatteryAlert, tr("Низкий заряд", "Low battery"),
-                tr("Когда заряд батареи падает до 5%", "When the battery drops to 5%"),
+            GroupToggle(Pos.Last, Icons.Rounded.BatteryAlert, tr("Низкий заряд", "Bateria fraca"),
+                tr("Когда заряд батареи падает до 5%", "Quando a bateria cai para 5%"),
                 s.evLowBattery, color = Tile.Red) { set { copy(evLowBattery = it) } }
         }
 
-        SectionHeader(tr("Подключения", "Connections"))
+        SectionHeader(tr("Подключения", "Conexões"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.Wifi, tr("Wi-Fi подключён", "Wi-Fi connected"), null,
+            GroupToggle(Pos.First, Icons.Rounded.Wifi, tr("Wi-Fi подключён", "Wi-Fi conectado"), null,
                 s.evWifiOn, color = Tile.Blue) { set { copy(evWifiOn = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.WifiOff, tr("Wi-Fi отключён", "Wi-Fi disconnected"), null,
+            GroupToggle(Pos.Middle, Icons.Rounded.WifiOff, tr("Wi-Fi отключён", "Wi-Fi desconectado"), null,
                 s.evWifiOff, color = Tile.Gray) { set { copy(evWifiOff = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.BluetoothConnected, tr("Наушники подключены", "Headphones connected"),
-                tr("По Bluetooth, с зарядом, если он известен", "Over Bluetooth, with the charge if it's known"),
+            GroupToggle(Pos.Middle, Icons.Rounded.BluetoothConnected, tr("Наушники подключены", "Fones de ouvido conectados"),
+                tr("По Bluetooth, с зарядом, если он известен", "Via Bluetooth, com a carga da bateria, se disponível"),
                 s.evHeadsetOn, color = Tile.Indigo) { set { copy(evHeadsetOn = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.BluetoothDisabled, tr("Наушники отключены", "Headphones disconnected"), null,
+            GroupToggle(Pos.Middle, Icons.Rounded.BluetoothDisabled, tr("Наушники отключены", "Fones de ouvido desconectados"), null,
                 s.evHeadsetOff, color = Tile.Gray) { set { copy(evHeadsetOff = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.Usb, tr("USB-устройство подключено", "USB device connected"), null,
+            GroupToggle(Pos.Middle, Icons.Rounded.Usb, tr("USB-устройство подключено", "Dispositivo USB conectado"), null,
                 s.evUsbOn, color = Tile.Teal) { set { copy(evUsbOn = it) } }
-            GroupToggle(Pos.Last, Icons.Rounded.UsbOff, tr("USB-устройство отключено", "USB device disconnected"), null,
+            GroupToggle(Pos.Last, Icons.Rounded.UsbOff, tr("USB-устройство отключено", "Dispositivo USB desconectado"), null,
                 s.evUsbOff, color = Tile.Gray) { set { copy(evUsbOff = it) } }
         }
 
-        SectionHeader(tr("Режимы", "Modes"))
+        SectionHeader(tr("Режимы", "Modos"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.AirplanemodeActive, tr("Режим полёта включён", "Airplane mode on"), null,
+            GroupToggle(Pos.First, Icons.Rounded.AirplanemodeActive, tr("Режим полёта включён", "Modo avião ligado"), null,
                 s.evAirplaneOn, color = Tile.Orange) { set { copy(evAirplaneOn = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.AirplanemodeInactive, tr("Режим полёта выключен", "Airplane mode off"), null,
+            GroupToggle(Pos.Middle, Icons.Rounded.AirplanemodeInactive, tr("Режим полёта выключен", "Modo avião desligado"), null,
                 s.evAirplaneOff, color = Tile.Gray) { set { copy(evAirplaneOff = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.DoNotDisturbOn, tr("Не беспокоить", "Do Not Disturb"),
-                tr("Луна и состояние при переключении", "A moon and the state when it changes"),
+            GroupToggle(Pos.Middle, Icons.Rounded.DoNotDisturbOn, tr("Не беспокоить", "Não perturbe"),
+                tr("Луна и состояние при переключении", "Uma lua e o estado quando ele muda"),
                 s.evDnd, color = Tile.Indigo) { set { copy(evDnd = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.Vibration, tr("Режим громкости", "Ring mode"),
-                tr("Звонок, вибрация или без звука", "Ring, vibrate or silent"),
+            GroupToggle(Pos.Middle, Icons.Rounded.Vibration, tr("Режим громкости", "Modo de toque"),
+                tr("Звонок, вибрация или без звука", "Som, vibrar ou silencioso"),
                 s.evRinger, color = Tile.Pink) { set { copy(evRinger = it) } }
-            GroupToggle(Pos.Last, Icons.Rounded.BrightnessAuto, tr("Режим яркости", "Brightness mode"),
-                tr("Когда включают или выключают адаптивную яркость", "When adaptive brightness is turned on or off"),
+            GroupToggle(Pos.Last, Icons.Rounded.BrightnessAuto, tr("Режим яркости", "Modo de brilho"),
+                tr("Когда включают или выключают адаптивную яркость", "Quando o brilho adaptativo é ligado ou desligado"),
                 s.evBrightness, color = Tile.Yellow) { set { copy(evBrightness = it) } }
         }
 
-        SectionHeader(tr("Оплата", "Payments"))
+        SectionHeader(tr("Оплата", "Pagamentos"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.Nfc, tr("Приложите к терминалу", "Hold near reader"),
+            GroupToggle(Pos.First, Icons.Rounded.Nfc, tr("Приложите к терминалу", "Aproxime do leitor"),
                 tr("Когда на экране оплата телефоном — Mir Pay, T-Pay, SberPay, Яндекс Пэй и другие. Держится, пока не заплатите или не выйдете из приложения",
-                    "When a phone payment is on screen — Mir Pay, T-Pay, SberPay, Yandex Pay and others. Stays until you pay or leave the app"),
+                    "Quando há um pagamento por celular na tela — Mir Pay, T-Pay, SberPay, Yandex Pay e outros. Fica até você pagar ou sair do app"),
                 s.evPayReady, color = Tile.Blue) { set { copy(evPayReady = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.AccountBalance, tr("Подсказка при открытии банка", "Hint when opening a bank"),
+            GroupToggle(Pos.Middle, Icons.Rounded.AccountBalance, tr("Подсказка при открытии банка", "Dica ao abrir o banco"),
                 tr("«К терминалу» сразу, как открыли банк или кошелёк, а не только на экране оплаты",
-                    "Hold near reader as soon as you open a bank or wallet app, not only on the payment screen"),
+                    "“Aproxime do leitor” assim que você abre um app de banco ou carteira, não só na tela de pagamento"),
                 s.payHintOnOpen, color = Tile.Gray) { set { copy(payHintOnOpen = it) } }
-            GroupToggle(Pos.Last, Icons.Rounded.CheckCircle, tr("Оплачено", "Paid"),
+            GroupToggle(Pos.Last, Icons.Rounded.CheckCircle, tr("Оплачено", "Pago"),
                 tr("Галочка и сумма — с экрана кошелька, из уведомления или СМС банка",
-                    "A check mark and the amount — from the wallet screen, a notification or a bank SMS"),
+                    "Um check e o valor — da tela da carteira, de uma notificação ou de um SMS do banco"),
                 s.evPaySuccess, color = Tile.Green) { set { copy(evPaySuccess = it) } }
         }
 
-        SectionHeader(tr("Другое", "Other"))
+        SectionHeader(tr("Другое", "Outros"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.Alarm, tr("Будильник поставлен", "Alarm set"),
-                tr("Время подъёма и сколько осталось спать", "Wake-up time and how long you can sleep"),
+            GroupToggle(Pos.First, Icons.Rounded.Alarm, tr("Будильник поставлен", "Alarme definido"),
+                tr("Время подъёма и сколько осталось спать", "Horário de acordar e quanto tempo você ainda pode dormir"),
                 s.evAlarmSet, color = Tile.Orange) { set { copy(evAlarmSet = it) } }
-            GroupToggle(Pos.Middle, Icons.Rounded.Lock, tr("Замок на экране блокировки", "Lock on the lock screen"),
-                tr("Пока телефон заблокирован, в капсуле замок", "While the phone is locked, the capsule shows a lock"),
+            GroupToggle(Pos.Middle, Icons.Rounded.Lock, tr("Замок на экране блокировки", "Cadeado na tela de bloqueio"),
+                tr("Пока телефон заблокирован, в капсуле замок", "Enquanto o celular está bloqueado, a cápsula mostra um cadeado"),
                 s.evLock, color = Tile.Indigo) { set { copy(evLock = it) } }
-            GroupToggle(Pos.Last, Icons.Rounded.LockOpen, tr("Разблокировка устройства", "Device unlock"),
-                tr("Замок открывается, когда вы разблокируете телефон", "A lock opens when you unlock the phone"),
+            GroupToggle(Pos.Last, Icons.Rounded.LockOpen, tr("Разблокировка устройства", "Desbloqueio do aparelho"),
+                tr("Замок открывается, когда вы разблокируете телефон", "O cadeado se abre quando você desbloqueia o celular"),
                 s.evUnlock, color = Tile.Purple) { set { copy(evUnlock = it) } }
         }
     }

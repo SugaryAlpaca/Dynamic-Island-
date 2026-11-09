@@ -249,7 +249,7 @@ fun CompactContent(act: Act, s: IslandSettings, wideWidth: Dp) {
 
         is Act.NoticeA -> NoticeCompact(act.n, s, wideWidth)
 
-        is Act.PayA -> PayReady(tr("Оплата", "Pay"), tr("К терминалу", "Hold near reader"), act.p.icon, s, wideWidth)
+        is Act.PayA -> PayReady(tr("Оплата", "Pagamento"), tr("К терминалу", "Aproxime do leitor"), act.p.icon, s, wideWidth)
 
     }
 }
@@ -490,7 +490,7 @@ private fun MessageCard(n: Notice, m: AppMessage, s: IslandSettings, @Suppress("
             }
             Spacer(Modifier.width(compactGap(s)))
             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
-                Text(tr("сейчас", "now"), color = dim, fontSize = 12.sp, maxLines = 1, softWrap = false)
+                Text(tr("сейчас", "agora"), color = dim, fontSize = 12.sp, maxLines = 1, softWrap = false)
                 Spacer(Modifier.width(4.dp))
                 Icon(Ios.bell, null, tint = dim, modifier = Modifier.size(12.dp))
             }
@@ -514,7 +514,7 @@ private fun MessageCard(n: Notice, m: AppMessage, s: IslandSettings, @Suppress("
                     }
                 }
                 if (hidden) {
-                    Text(tr("Содержимое скрыто", "Content hidden"), color = dim, fontSize = 14.sp, lineHeight = 19.sp, maxLines = 1)
+                    Text(tr("Содержимое скрыто", "Conteúdo oculto"), color = dim, fontSize = 14.sp, lineHeight = 19.sp, maxLines = 1)
                 } else if (open && m.history.size > 1) {
                     m.history.forEachIndexed { i, line ->
                         Text(
@@ -543,7 +543,7 @@ private fun MessageCard(n: Notice, m: AppMessage, s: IslandSettings, @Suppress("
                         // Как в ролике: на миг «Отправлено» с галочкой и кому
                         IslandBus.post(
                             Notice(
-                                title = tr("Отправлено", "Sent"),
+                                title = tr("Отправлено", "Enviado"),
                                 state = n.title,
                                 icon = n.icon,
                                 tint = accent,
@@ -553,7 +553,7 @@ private fun MessageCard(n: Notice, m: AppMessage, s: IslandSettings, @Suppress("
                         )
                     } else {
                         // Поле остаётся открытым с текстом — можно попробовать ещё раз или ответить в приложении
-                        Toast.makeText(context, tr("Не удалось отправить ответ", "Couldn't send the reply"), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, tr("Не удалось отправить ответ", "Não foi possível enviar a resposta"), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -851,7 +851,7 @@ private fun LiveBanner(n: Notice, l: LiveInfo, s: IslandSettings, wideWidth: Dp)
                     overflow = TextOverflow.Ellipsis, textAlign = TextAlign.End)
             }
             // На узкой плашке — коротко: «12:31 · 19 ч»; полностью — в раскрытом виде
-            val shortEta = l.eta?.removePrefix("Прибытие в ")?.removePrefix("Arrive ")?.split(" · ")?.take(2)?.joinToString(" · ")
+            val shortEta = l.eta?.removePrefix("Прибытие в ")?.removePrefix("Chegada às ")?.split(" · ")?.take(2)?.joinToString(" · ")
             if (shortEta != null) {
                 Text(shortEta, color = tint, fontSize = 13.sp, style = Digits, maxLines = 1)
             }
@@ -892,7 +892,7 @@ private fun IncomingCall(c: CallInfo, s: IslandSettings, wideWidth: Dp) {
         }
         Spacer(Modifier.width(11.dp))
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
-            Text(tr("Входящий вызов", "Incoming call"), color = Tints.Gray, fontSize = 12.5.sp, lineHeight = 15.sp, maxLines = 1)
+            Text(tr("Входящий вызов", "Chamada recebida"), color = Tints.Gray, fontSize = 12.5.sp, lineHeight = 15.sp, maxLines = 1)
             Text(c.name, color = Color.White, fontSize = 18.sp, lineHeight = 22.sp, fontWeight = FontWeight.SemiBold, maxLines = 1,
                 overflow = TextOverflow.Ellipsis)
         }

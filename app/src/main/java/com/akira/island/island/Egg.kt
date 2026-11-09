@@ -111,7 +111,7 @@ object Egg {
 
     internal val sparks = ArrayList<Spark>()
 
-    private val LINE get() = tr("Вас переполняет РЕШИМОСТЬ.", "You're filled with DETERMINATION.")
+    private val LINE get() = tr("Вас переполняет РЕШИМОСТЬ.", "Você está cheio de DETERMINAÇÃO.")
 
     /** «Hopes and Dreams» Тоби Фокса — по названию и исполнителю, альбому или подписи «Undertale». */
     fun matches(m: MediaInfo): Boolean {

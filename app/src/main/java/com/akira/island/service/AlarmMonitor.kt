@@ -56,7 +56,7 @@ class AlarmMonitor(private val context: Context) {
         if (!s.enabled || !s.evAlarmSet) return
         IslandBus.post(
             Notice(
-                title = tr("Будильник", "Alarm"),
+                title = tr("Будильник", "Alarme"),
                 icon = Ios.load(context, R.drawable.ios_alarm),
                 tint = Tints.Orange,
                 style = NoticeStyle.ALARM,

@@ -26,10 +26,10 @@ import com.akira.island.ui.Ui
 @Composable
 fun LyricsScreen(onBack: () -> Unit) {
     val s by SettingsRepo.state.collectAsState()
-    Page(tr("Текст песен", "Lyrics"), onBack) {
+    Page(tr("Текст песен", "Letra"), onBack) {
         Group {
-            GroupToggle(Pos.Single, Icons.Rounded.LibraryMusic, tr("Текст песен", "Lyrics"),
-                tr("Строка песни в раскрытом плеере заливается белым по мере пения", "The current line in the expanded player fills with white as it's sung"),
+            GroupToggle(Pos.Single, Icons.Rounded.LibraryMusic, tr("Текст песен", "Letra"),
+                tr("Строка песни в раскрытом плеере заливается белым по мере пения", "A linha atual no player expandido é preenchida de branco conforme a música é cantada"),
                 s.lyricsEnabled, color = Tile.Pink) { v -> SettingsRepo.update { copy(lyricsEnabled = v) } }
         }
         Text(
@@ -39,11 +39,11 @@ fun LyricsScreen(onBack: () -> Unit) {
                     "раскладываются по длине песни. Пока идёт поиск, в плеере написано «Ищу текст песни…», " +
                     "если ничего не нашлось — «Текст песни не найден». На сервер уходят только название и исполнитель. " +
                     "Работает с любым плеером, который показывает уведомление с управлением: Spotify, YouTube Music, Яндекс Музыка, VK и т.д.",
-                "Lyrics are looked up by title, artist and track length: first on LRCLIB (lrclib.net), then on NetEase, " +
-                    "which has a lot of Russian music. If there are no synced lyrics anywhere, plain lyrics are spread over " +
-                    "the length of the song. While searching, the player says “Looking for lyrics…”, and if nothing is found —" +
-                    " “No lyrics found”. Only the title and artist are sent to the server. Works with any player that shows a " +
-                    "notification with controls: Spotify, YouTube Music, Yandex Music, VK and others.",
+                "A letra é buscada pelo título, artista e duração da faixa: primeiro no LRCLIB (lrclib.net), depois no NetEase, " +
+                    "que tem muita música russa. Se não houver letra sincronizada em lugar nenhum, as linhas da letra simples são distribuídas ao longo " +
+                    "da música. Durante a busca, o player mostra “Procurando a letra…”, e se nada for encontrado —" +
+                    " “Letra não encontrada”. Só o título e o artista são enviados ao servidor. Funciona com qualquer player que mostre uma " +
+                    "notificação com controles: Spotify, YouTube Music, Yandex Music, VK e outros.",
             ),
             color = Ui.Sub,
             fontSize = 14.sp,

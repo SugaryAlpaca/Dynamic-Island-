@@ -120,7 +120,7 @@ fun UpdateCard(n: Notice, s: IslandSettings, wideWidth: Dp) {
                 Text(n.title, color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold, maxLines = 1,
                     overflow = TextOverflow.Ellipsis)
                 // Пока качается, справа кольцо — вместо длинной подписи коротко, что происходит
-                val caption = if (loading) tr("Скачивается…", "Downloading…") else n.caption
+                val caption = if (loading) tr("Скачивается…", "Baixando…") else n.caption
                 if (failed != null) {
                     // Ошибку — целиком, в две строки: по ней понятно, что делать
                     Text(failed, color = Tints.Orange, fontSize = 13.sp, lineHeight = 16.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
@@ -142,7 +142,7 @@ fun UpdateCard(n: Notice, s: IslandSettings, wideWidth: Dp) {
         }
         Spacer(Modifier.height(18.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            CardButton(if (release == null) tr("Что нового", "What's new") else tr("Позже", "Later"),
+            CardButton(if (release == null) tr("Что нового", "Novidades") else tr("Позже", "Depois"),
                 Color.White.copy(alpha = 0.1f), Color.White.copy(alpha = 0.75f)) {
                 when {
                     release == null -> Controls.openApp(context, context.packageName)
@@ -153,10 +153,10 @@ fun UpdateCard(n: Notice, s: IslandSettings, wideWidth: Dp) {
             }
             CardButton(
                 when {
-                    release == null -> tr("Готово", "Done")
+                    release == null -> tr("Готово", "Concluído")
                     progress != null -> "${(progress * 100).toInt()}%"
-                    ready != null -> tr("Установить", "Install")
-                    else -> tr("Обновить", "Update")
+                    ready != null -> tr("Установить", "Instalar")
+                    else -> tr("Обновить", "Atualizar")
                 },
                 Tints.Lavender, Ink, bold = true,
                 icon = if (release != null && progress == null) Ios.download else null,

@@ -109,9 +109,9 @@ private class PermState(val accessibility: Boolean, val notifications: Boolean, 
     /** Чего не хватает — для подписи на главной */
     val missing: List<String>
         get() = listOfNotNull(
-            tr("спец. возможности", "accessibility").takeIf { !accessibility },
-            tr("уведомления", "notifications").takeIf { !notifications },
-            tr("звонки", "calls").takeIf { !calls },
+            tr("спец. возможности", "acessibilidade").takeIf { !accessibility },
+            tr("уведомления", "notificações").takeIf { !notifications },
+            tr("звонки", "chamadas").takeIf { !calls },
             "Bluetooth".takeIf { !bluetooth },
         )
 }
@@ -151,7 +151,7 @@ fun HomeScreen(open: (Screen) -> Unit) {
     val (perms, _) = rememberPermState()
     val missing = perms.missing
 
-    Page(tr("Динамический остров", "Dynamic Island")) {
+    Page(tr("Динамический остров", "Ilha Dinâmica")) {
         IslandPreview()
         UpdateSection()
 
@@ -173,19 +173,19 @@ fun HomeScreen(open: (Screen) -> Unit) {
 
         ToggleCard(
             Icons.Rounded.PowerSettingsNew,
-            tr("Остров включён", "Island on"),
+            tr("Остров включён", "Ilha ativada"),
             when {
-                !perms.accessibility -> tr("Сначала включите службу в спец. возможностях", "First turn on the service in Accessibility")
-                running -> tr("Капсула показывается над камерой", "The capsule shows over the camera")
-                else -> tr("Служба запускается…", "The service is starting…")
+                !perms.accessibility -> tr("Сначала включите службу в спец. возможностях", "Primeiro ative o serviço em Acessibilidade")
+                running -> tr("Капсула показывается над камерой", "A cápsula aparece sobre a câmera")
+                else -> tr("Служба запускается…", "O serviço está iniciando…")
             },
             s.enabled, color = Tile.Green,
         ) { v -> SettingsRepo.update { copy(enabled = v) } }
 
         Group {
             GroupItem(
-                Pos.First, Icons.Rounded.VerifiedUser, tr("Разрешения", "Permissions"),
-                if (missing.isEmpty()) tr("Всё включено", "All granted") else tr("Нужно включить: ", "Needed: ") + missing.joinToString(", "),
+                Pos.First, Icons.Rounded.VerifiedUser, tr("Разрешения", "Permissões"),
+                if (missing.isEmpty()) tr("Всё включено", "Tudo concedido") else tr("Нужно включить: ", "Falta ativar: ") + missing.joinToString(", "),
                 color = if (missing.isEmpty()) Tile.Green else Tile.Orange,
                 onClick = { open(Screen.PERMISSIONS) },
             ) { if (missing.isEmpty()) Arrow() else CountBadge(missing.size) }
@@ -194,8 +194,8 @@ fun HomeScreen(open: (Screen) -> Unit) {
             // И про банки, которые не пускают, пока остров включён
             BanksItem(Pos.Middle, open)
             GroupItem(
-                Pos.Last, Icons.Rounded.Science, tr("Проверка", "Try it"),
-                tr("Событие, сообщение, звонок, оплата — прямо в острове", "An event, message, call, payment — right in the island"),
+                Pos.Last, Icons.Rounded.Science, tr("Проверка", "Testar"),
+                tr("Событие, сообщение, звонок, оплата — прямо в острове", "Um evento, mensagem, chamada, pagamento — direto na ilha"),
                 color = Tile.Purple, onClick = { open(Screen.TESTS) },
             ) { Arrow() }
         }
@@ -214,14 +214,14 @@ private fun StartCard(onOpen: () -> Unit, onHelp: () -> Unit) {
             .border(1.dp, Ui.Primary.copy(alpha = 0.35f), RoundedCornerShape(28.dp))
             .padding(20.dp),
     ) {
-        Text(tr("Включите остров", "Turn on the island"), color = Ui.Text, fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text(tr("Включите остров", "Ative a ilha"), color = Ui.Text, fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(6.dp))
         Text(
             tr(
                 "Капсулу рядом с камерой может рисовать только служба спец. возможностей. " +
                     "Откройте «Спец. возможности» → «Динамический остров» и включите её.",
-                "Only an accessibility service can draw the capsule next to the camera. Open Accessibility → Dynamic " +
-                    "Island and turn it on.",
+                "Só um serviço de acessibilidade pode desenhar a cápsula ao lado da câmera. Abra Acessibilidade → Ilha " +
+                    "Dinâmica e ative-o.",
             ),
             color = Ui.Sub, fontSize = 14.sp, lineHeight = 20.sp,
         )
@@ -229,7 +229,7 @@ private fun StartCard(onOpen: () -> Unit, onHelp: () -> Unit) {
         Box(
             Modifier.fillMaxWidth().clip(CircleShape).background(Ui.Primary).clickable(onClick = onOpen).padding(vertical = 14.dp),
             contentAlignment = Alignment.Center,
-        ) { Text(tr("Открыть спец. возможности", "Open Accessibility"), color = Ui.OnPrimary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold) }
+        ) { Text(tr("Открыть спец. возможности", "Abrir Acessibilidade"), color = Ui.OnPrimary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold) }
         // Android 13+ не даёт включить службу приложению не из Play Маркета, пока не разрешишь «ограниченные настройки»
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Spacer(Modifier.height(16.dp))
@@ -240,14 +240,14 @@ private fun StartCard(onOpen: () -> Unit, onHelp: () -> Unit) {
                     .clickable { Perms.openAppDetails(context) }.padding(vertical = 13.dp),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(tr("Открыть «О приложении»", "Open App info"), color = Ui.Primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("Открыть «О приложении»", "Abrir Informações do app"), color = Ui.Primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
             }
         }
         Box(
             Modifier.fillMaxWidth().padding(top = 4.dp).clip(CircleShape).clickable(onClick = onHelp).padding(vertical = 10.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(tr("Переключатель серый? Инструкция", "Switch grayed out? Instructions"), color = Ui.Primary, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+            Text(tr("Переключатель серый? Инструкция", "Chave esmaecida? Instruções"), color = Ui.Primary, fontSize = 14.sp, fontWeight = FontWeight.Medium)
         }
     }
 }
@@ -258,10 +258,10 @@ internal fun restrictedHelp(): String = tr(
         "1. Попробуйте включить службу один раз — появится это окно, закройте его.\n" +
         "2. Откройте «О приложении» → «⋮» справа вверху → «Разрешить ограниченные настройки».\n" +
         "3. Вернитесь в «Спец. возможности» и включите остров.",
-    "Android says “Restricted setting” or “App was denied access”? That's how it protects apps not from Google Play:\n" +
-        "1. Try to turn the service on once — that window shows up, close it.\n" +
-        "2. Open App info → “⋮” in the top right → “Allow restricted settings”.\n" +
-        "3. Go back to Accessibility and turn the island on.",
+    "O Android mostra “Configuração restrita” ou “Acesso negado”? É assim que ele protege apps de fora do Google Play:\n" +
+        "1. Tente ativar o serviço uma vez — essa janela aparece, feche-a.\n" +
+        "2. Abra Informações do app → “⋮” no canto superior direito → “Permitir configurações restritas”.\n" +
+        "3. Volte para Acessibilidade e ative a ilha.",
 )
 
 /** «Сообщения приходят дважды?» — когда у мессенджера ещё всплывает своя плашка поверх острова. */
@@ -270,21 +270,21 @@ private fun DoubleBannerCard(app: String, onFix: () -> Unit, onHide: () -> Unit)
     Column(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(28.dp)).background(Ui.Card).padding(20.dp),
     ) {
-        Text(tr("Сообщения приходят дважды?", "Messages show up twice?"), color = Ui.Text, fontSize = 17.sp, fontWeight = FontWeight.Bold)
+        Text(tr("Сообщения приходят дважды?", "Mensagens aparecem duas vezes?"), color = Ui.Text, fontSize = 17.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(6.dp))
         Text(
             tr(
                 "Сообщение показывает и остров, и сам $app своей плашкой. Выключите у него «Всплывающие уведомления» — " +
                     "останется только остров, а в шторке уведомление сохранится.",
-                "Both the island and $app itself show the message. Turn off its “Pop on screen” — only the island will " +
-                    "remain, and the notification stays in the shade.",
+                "Tanto a ilha quanto o próprio $app mostram a mensagem. Desative as “Notificações pop-up” dele — só a ilha " +
+                    "vai ficar, e a notificação continua na barra de notificações.",
             ),
             color = Ui.Sub, fontSize = 14.sp, lineHeight = 20.sp,
         )
         Spacer(Modifier.height(14.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            PillAction(tr("Настроить", "Set up"), onClick = onFix)
-            PillAction(tr("Скрыть", "Hide"), onClick = onHide)
+            PillAction(tr("Настроить", "Configurar"), onClick = onFix)
+            PillAction(tr("Скрыть", "Ocultar"), onClick = onHide)
         }
     }
 }
@@ -301,33 +301,33 @@ fun PermissionsScreen(onBack: () -> Unit, open: (Screen) -> Unit) {
         if (result.values.none { it } && !Perms.calls(context)) Perms.openAppDetails(context)
     }
 
-    Page(tr("Разрешения", "Permissions"), onBack,
+    Page(tr("Разрешения", "Permissões"), onBack,
         subtitle = tr("Остров не хранит и не отправляет ваши уведомления, звонки и экраны: разрешения нужны, только чтобы показывать события",
-            "The island doesn't store or send your notifications, calls or screens: permissions are only used to show events")) {
+            "A ilha não armazena nem envia suas notificações, chamadas ou telas: as permissões servem só para mostrar eventos")) {
         Group {
             GroupItem(
-                Pos.First, Icons.Rounded.AccessibilityNew, tr("Спец. возможности", "Accessibility"),
-                if (perms.accessibility) tr("Включено — остров рисуется поверх строки состояния", "On — the island draws over the status bar")
-                else tr("Нужно включить: без этого острова не будет", "Needed: without it there's no island"),
+                Pos.First, Icons.Rounded.AccessibilityNew, tr("Спец. возможности", "Acessibilidade"),
+                if (perms.accessibility) tr("Включено — остров рисуется поверх строки состояния", "Ativado — a ilha é desenhada sobre a barra de status")
+                else tr("Нужно включить: без этого острова не будет", "Precisa ativar: sem isso não há ilha"),
                 onClick = { Perms.openAccessibility(context) }, color = Tile.Blue,
             ) { Status(perms.accessibility) }
             GroupItem(
-                Pos.Middle, Icons.Rounded.Notifications, tr("Доступ к уведомлениям", "Notification access"),
-                if (perms.notifications) tr("Включено — музыка, сообщения, прогресс и таймеры", "On — music, messages, progress and timers")
-                else tr("Нужен для музыки, сообщений, прогресса и таймеров", "Needed for music, messages, progress and timers"),
+                Pos.Middle, Icons.Rounded.Notifications, tr("Доступ к уведомлениям", "Acesso às notificações"),
+                if (perms.notifications) tr("Включено — музыка, сообщения, прогресс и таймеры", "Ativado — música, mensagens, progresso e timers")
+                else tr("Нужен для музыки, сообщений, прогресса и таймеров", "Necessário para música, mensagens, progresso e timers"),
                 onClick = { Perms.openNotifications(context) }, color = Tile.Red,
             ) { Status(perms.notifications) }
             GroupItem(
-                Pos.Middle, Icons.Rounded.Call, tr("Звонки", "Calls"),
-                if (perms.calls) tr("Входящий вызов, имя из контактов, ответ кнопкой", "Incoming calls, names from contacts, answer button")
-                else tr("Чтобы остров показывал входящие звонки", "So the island shows incoming calls"),
+                Pos.Middle, Icons.Rounded.Call, tr("Звонки", "Chamadas"),
+                if (perms.calls) tr("Входящий вызов, имя из контактов, ответ кнопкой", "Chamadas recebidas, nomes dos contatos, botão de atender")
+                else tr("Чтобы остров показывал входящие звонки", "Para a ilha mostrar as chamadas recebidas"),
                 onClick = { if (perms.calls) Perms.openAppDetails(context) else callLauncher.launch(Perms.CALL_PERMISSIONS) },
                 color = Tile.Green,
             ) { Status(perms.calls) }
             GroupItem(
                 Pos.Last, Icons.Rounded.Bluetooth, "Bluetooth",
-                if (perms.bluetooth) tr("Имена наушников при подключении", "Headphone names when they connect")
-                else tr("Чтобы видеть подключение наушников", "To see headphones connect"),
+                if (perms.bluetooth) tr("Имена наушников при подключении", "Nomes dos fones de ouvido ao conectar")
+                else tr("Чтобы видеть подключение наушников", "Para ver quando os fones de ouvido conectam"),
                 onClick = {
                     if (!perms.bluetooth && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) btLauncher.launch(Manifest.permission.BLUETOOTH_CONNECT)
                     else Perms.openAppDetails(context)
@@ -336,10 +336,10 @@ fun PermissionsScreen(onBack: () -> Unit, open: (Screen) -> Unit) {
             ) { Status(perms.bluetooth) }
         }
 
-        SectionHeader(tr("Если не включается", "If it doesn't turn on"))
+        SectionHeader(tr("Если не включается", "Se não ativar"))
         Group {
-            GroupItem(Pos.First, Icons.Rounded.Lightbulb, tr("Инструкция", "Instructions"),
-                tr("Серый переключатель на Android 13+, батарея и автозапуск", "Grayed-out switch on Android 13+, battery and autostart"),
+            GroupItem(Pos.First, Icons.Rounded.Lightbulb, tr("Инструкция", "Instruções"),
+                tr("Серый переключатель на Android 13+, батарея и автозапуск", "Chave esmaecida no Android 13+, bateria e início automático"),
                 onClick = { open(Screen.INSTRUCTION) }, color = Tile.Yellow) { Arrow() }
             KeepAliveItem(Pos.Middle, open)
             AppDetailsItem(Pos.Last)
@@ -356,8 +356,8 @@ fun TestsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
     val haptic = rememberHaptic()
     val demos = remember { demos(context) }
-    Page(tr("Проверка", "Try it"), onBack,
-        subtitle = tr("Нажмите — пример появится в острове наверху экрана", "Tap — the example shows up in the island at the top of the screen")) {
+    Page(tr("Проверка", "Testar"), onBack,
+        subtitle = tr("Нажмите — пример появится в острове наверху экрана", "Toque — o exemplo aparece na ilha, no topo da tela")) {
         demos.chunked(2).forEach { row ->
             Row(Modifier.fillMaxWidth().height(IntrinsicSize.Min), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 row.forEach { d ->
@@ -383,48 +383,48 @@ private fun DemoTile(d: Demo, modifier: Modifier, onClick: () -> Unit) {
 }
 
 private fun demos(context: Context): List<Demo> = listOf(
-    Demo(Icons.Rounded.Bolt, tr("Событие", "Event"), tr("Зарядка 75% во всю ширину", "Charging 75% at full width"), Tile.Green) {
-        IslandBus.post(Notice(tr("Зарядка", "Charging"), "75%", Ios.load(context, R.drawable.ios_flash), Tints.Green, battery = 75))
+    Demo(Icons.Rounded.Bolt, tr("Событие", "Evento"), tr("Зарядка 75% во всю ширину", "Carregando 75% em largura total"), Tile.Green) {
+        IslandBus.post(Notice(tr("Зарядка", "Carregando"), "75%", Ios.load(context, R.drawable.ios_flash), Tints.Green, battery = 75))
     },
-    Demo(Icons.Rounded.NotificationsOff, tr("Режим звука", "Ring mode"),
-        tr("Капсула вздрагивает, колокольчик качается", "The capsule shakes, the bell swings"), Tile.Red) {
-        IslandBus.post(Notice("", tr("Без звука", "Silent"), Ios.load(context, R.drawable.ios_notifications_off), Tints.Red, style = NoticeStyle.PILL))
+    Demo(Icons.Rounded.NotificationsOff, tr("Режим звука", "Modo de toque"),
+        tr("Капсула вздрагивает, колокольчик качается", "A cápsula treme, o sino balança"), Tile.Red) {
+        IslandBus.post(Notice("", tr("Без звука", "Silencioso"), Ios.load(context, R.drawable.ios_notifications_off), Tints.Red, style = NoticeStyle.PILL))
     },
-    Demo(Icons.Rounded.ChatBubble, tr("Сообщение", "Message"),
-        tr("С кнопками «Ответить» и «Пометить прочитанным»", "With Reply and Mark as read buttons"), Tile.Blue) {
+    Demo(Icons.Rounded.ChatBubble, tr("Сообщение", "Mensagem"),
+        tr("С кнопками «Ответить» и «Пометить прочитанным»", "Com os botões Responder e Marcar como lida"), Tile.Blue) {
         // Пробные кнопки: «Ответить» с полем ввода, как у Telegram и WhatsApp
         val flags = PendingIntent.FLAG_UPDATE_CURRENT or
             (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else 0)
         val test = PendingIntent.getBroadcast(context, 0, Intent("com.akira.island.TEST").setPackage(context.packageName), flags)
-        val input = RemoteInput.Builder("reply").setLabel(tr("Ответить", "Reply")).build()
+        val input = RemoteInput.Builder("reply").setLabel(tr("Ответить", "Responder")).build()
         IslandBus.post(
             Notice(
-                tr("Анна", "Anna"), icon = Ios.load(context, R.drawable.ios_chatbubble_ellipses), tint = Tints.Blue,
+                tr("Анна", "Ana"), icon = Ios.load(context, R.drawable.ios_chatbubble_ellipses), tint = Tints.Blue,
                 style = NoticeStyle.MESSAGE,
                 extraMs = 4_500,
-                message = AppMessage("test", context.packageName, tr("Остров", "Island"),
-                    tr("Привет! Так выглядит уведомление в острове", "Hi! This is how a notification looks in the island"),
+                message = AppMessage("test", context.packageName, tr("Остров", "Ilha"),
+                    tr("Привет! Так выглядит уведомление в острове", "Oi! É assim que uma notificação aparece na ilha"),
                     null, NotificationParser.icon(context, context.packageName), null,
                     actions = listOf(
-                        MsgAction(tr("Ответить", "Reply"), test, listOf(input)),
-                        MsgAction(tr("Пометить прочитанным", "Mark as read"), test),
+                        MsgAction(tr("Ответить", "Responder"), test, listOf(input)),
+                        MsgAction(tr("Пометить прочитанным", "Marcar como lida"), test),
                     ),
-                    history = listOf(tr("Как дела?", "How are you?"), tr("Есть минутка?", "Got a minute?"),
-                        tr("Привет! Так выглядит уведомление в острове", "Hi! This is how a notification looks in the island")),
+                    history = listOf(tr("Как дела?", "Como vai?"), tr("Есть минутка?", "Tem um minutinho?"),
+                        tr("Привет! Так выглядит уведомление в острове", "Oi! É assim que uma notificação aparece na ilha")),
                 ),
             ),
         )
     },
-    Demo(Icons.Rounded.Call, tr("Входящий звонок", "Incoming call"), tr("Можно ответить и сбросить", "You can answer or decline"), Tile.Green) {
+    Demo(Icons.Rounded.Call, tr("Входящий звонок", "Chamada recebida"), tr("Можно ответить и сбросить", "Dá para atender ou recusar"), Tile.Green) {
         Controls.showTestCall()
     },
-    Demo(Icons.Rounded.HourglassBottom, tr("Таймер", "Timer"), tr("Обратный отсчёт одной минуты", "A one-minute countdown"), Tile.Orange) {
+    Demo(Icons.Rounded.HourglassBottom, tr("Таймер", "Timer"), tr("Обратный отсчёт одной минуты", "Uma contagem regressiva de um minuto"), Tile.Orange) {
         Controls.startTimer(1)
     },
-    Demo(Icons.Rounded.Alarm, tr("Будильник", "Alarm"), tr("Время подъёма и сколько осталось спать", "Wake-up time and how long you can sleep"), Tile.Indigo) {
+    Demo(Icons.Rounded.Alarm, tr("Будильник", "Alarme"), tr("Время подъёма и сколько осталось спать", "Hora de acordar e quanto tempo ainda dá para dormir"), Tile.Indigo) {
         IslandBus.post(
             Notice(
-                title = tr("Будильник", "Alarm"),
+                title = tr("Будильник", "Alarme"),
                 icon = Ios.load(context, R.drawable.ios_alarm),
                 tint = Tints.Orange,
                 style = NoticeStyle.ALARM,
@@ -433,7 +433,7 @@ private fun demos(context: Context): List<Demo> = listOf(
             ),
         )
     },
-    Demo(Icons.Rounded.Nfc, tr("Оплата", "Payment"), tr("«К терминалу», затем «Оплачено» с суммой", "Hold near reader, then Paid with the amount"), Tile.Teal) {
+    Demo(Icons.Rounded.Nfc, tr("Оплата", "Pagamento"), tr("«К терминалу», затем «Оплачено» с суммой", "Aproxime do leitor, depois Pago com o valor"), Tile.Teal) {
         // Как настоящая оплата: подсказка держится, пока ждём терминал, потом — «Оплачено»
         val pkg = context.packageName
         IslandBus.payReady.value = PayReady(pkg, NotificationParser.icon(context, pkg))
@@ -442,17 +442,17 @@ private fun demos(context: Context): List<Demo> = listOf(
             if (IslandBus.payReady.value?.pkg == pkg) IslandBus.payReady.value = null
             IslandBus.post(
                 Notice(
-                    tr("Оплачено", "Paid"), tr("1 250 ₽", "$12.50"), Ios.load(context, R.drawable.ios_checkmark_circle), Tints.Green,
-                    caption = tr("Остров", "Island"), style = NoticeStyle.PAY_DONE, extraMs = 900,
+                    tr("Оплачено", "Pago"), tr("1 250 ₽", "R$ 12,50"), Ios.load(context, R.drawable.ios_checkmark_circle), Tints.Green,
+                    caption = tr("Остров", "Ilha"), style = NoticeStyle.PAY_DONE, extraMs = 900,
                 ),
             )
         }
     },
-    Demo(Icons.Rounded.Navigation, tr("Навигатор", "Navigation"), tr("Стрелка поворота и метры до неё", "The turn arrow and meters to it"), Tile.Purple) {
+    Demo(Icons.Rounded.Navigation, tr("Навигатор", "Navegação"), tr("Стрелка поворота и метры до неё", "A seta da curva e os metros até ela"), Tile.Purple) {
         Controls.showTestLive(context)
     },
-    Demo(Icons.Rounded.SystemUpdate, tr("Обновление", "Update"),
-        tr("Карточка новой версии: загрузка и «Обновлено»", "The new version card: download, then Updated"), Tile.Pink) {
+    Demo(Icons.Rounded.SystemUpdate, tr("Обновление", "Atualização"),
+        tr("Карточка новой версии: загрузка и «Обновлено»", "O cartão da nova versão: download e depois Atualizado"), Tile.Pink) {
         UpdateChecker.showDemo(context)
     },
 )
@@ -465,7 +465,7 @@ internal fun Status(ok: Boolean) {
             .background(if (ok) Tints.Green.copy(alpha = 0.18f) else Tints.Orange.copy(alpha = 0.18f))
             .padding(horizontal = 10.dp, vertical = 4.dp),
     ) {
-        Text(if (ok) tr("Да", "Yes") else tr("Нет", "No"), color = if (ok) Tints.Green else Tints.Orange, fontSize = 13.sp)
+        Text(if (ok) tr("Да", "Sim") else tr("Нет", "Não"), color = if (ok) Tints.Green else Tints.Orange, fontSize = 13.sp)
     }
 }
 
@@ -488,7 +488,7 @@ fun IslandPreview(expanded: Boolean = false) {
     val s by SettingsRepo.state.collectAsState()
     val demo = remember {
         MediaInfo(
-            key = "demo", pkg = "", title = tr("Демо", "Demo"), artist = "", album = null, art = null,
+            key = "demo", pkg = "", title = tr("Демо", "Demonstração"), artist = "", album = null, art = null,
             accent = Tints.Lavender, durationMs = 0, positionMs = 0, positionTime = SystemClock.elapsedRealtime(),
             speed = 1f, playing = true, canSeek = false,
         )

@@ -234,7 +234,7 @@ class PayScreenReader(private val service: AccessibilityService, private val sco
             if (fresh.any { PayScreenParser.paid(it) }) {
                 val sums = fresh.mapNotNull { PayScreenParser.amount(it) }.distinct()
                 if (sums.size == 1) return paid(pkg, sums[0])
-                PayDebug.add(tr("«Оплачено» на экране, но сумм: ${sums.size}", "“Paid” on screen, but amounts: ${sums.size}"), pkg, fresh.joinToString(" | "))
+                PayDebug.add(tr("«Оплачено» на экране, но сумм: ${sums.size}", "“Pago” na tela, mas valores: ${sums.size}"), pkg, fresh.joinToString(" | "))
             }
         } else if (now - since < 4_000 && all.size == 1 && texts.any { PayScreenParser.paid(it) } && texts.none { PayScreenParser.failure(it) }) {
             // Приложение открылось само уже с результатом: заплатили, не открывая его

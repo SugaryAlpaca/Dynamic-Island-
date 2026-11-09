@@ -68,10 +68,10 @@ object NavScreen {
             return if (street != null && !instruction.contains(street, ignoreCase = true)) "$instruction · $street" else instruction
         }
         val phrase = when (turn) {
-            Turn.LEFT -> tr("Поверните налево", "Turn left")
-            Turn.RIGHT -> tr("Поверните направо", "Turn right")
-            Turn.STRAIGHT -> tr("Двигайтесь прямо", "Go straight")
-            Turn.UTURN -> tr("Развернитесь", "Make a U-turn")
+            Turn.LEFT -> tr("Поверните налево", "Vire à esquerda")
+            Turn.RIGHT -> tr("Поверните направо", "Vire à direita")
+            Turn.STRAIGHT -> tr("Двигайтесь прямо", "Siga em frente")
+            Turn.UTURN -> tr("Развернитесь", "Faça o retorno")
             null -> null
         }
         return when {
@@ -171,7 +171,7 @@ object NavScreenParser {
         val time = all.firstOrNull { clock.matches(it.text) }?.text
         val left = (all.firstOrNull { hours.matches(it.text) } ?: all.firstOrNull { minutes.matches(it.text) })
             ?.text?.replace(Regex("""\s+"""), " ")
-        val eta = listOfNotNull(time?.let { tr("Прибытие в $it", "Arrive $it") }, left?.let(LiveParser::units),
+        val eta = listOfNotNull(time?.let { tr("Прибытие в $it", "Chegada às $it") }, left?.let(LiveParser::units),
             total?.text?.replace(Regex("""\s+"""), " ")?.let(LiveParser::units))
             .takeIf { it.isNotEmpty() }?.joinToString(" · ")
         // Направление — только из подсказки: в подписях кнопок («← шаг влево») тоже бывают «влево» и «вправо»

@@ -176,7 +176,7 @@ private fun MediaExpanded(m: MediaInfo, s: IslandSettings, lyrics: Lyrics?) {
             // Видно, что текст ищется или его нет — а не что функция сломалась
             Spacer(Modifier.height(12.dp))
             Text(
-                if (status?.second == LyricsStatus.LOADING) tr("Ищу текст песни…", "Looking for lyrics…") else tr("Текст песни не найден", "No lyrics found"),
+                if (status?.second == LyricsStatus.LOADING) tr("Ищу текст песни…", "Buscando a letra…") else tr("Текст песни не найден", "Letra não encontrada"),
                 color = Color.White.copy(alpha = 0.35f), fontSize = 13.sp,
             )
         }
@@ -360,9 +360,9 @@ private fun TimerExpanded(t: TimerState, s: IslandSettings) {
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(tr("Таймер", "Timer"), color = Tints.Orange, fontSize = 15.sp)
-                Text(tr("Время вышло", "Time's up"), color = Tints.Orange, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("Время вышло", "Tempo esgotado"), color = Tints.Orange, fontSize = 24.sp, fontWeight = FontWeight.SemiBold)
             }
-            PillButton(Ios.stop, tr("Стоп", "Stop"), bg = Tints.Orange, fg = Color.Black) { Controls.cancelTimer() }
+            PillButton(Ios.stop, tr("Стоп", "Parar"), bg = Tints.Orange, fg = Color.Black) { Controls.cancelTimer() }
         }
         return
     }
@@ -376,7 +376,7 @@ private fun TimerExpanded(t: TimerState, s: IslandSettings) {
         Spacer(Modifier.width(12.dp))
         RoundButton(Ios.close, size = 50.dp, bg = Color.White.copy(alpha = 0.2f), iconScale = 0.44f) { Controls.cancelTimer() }
         Spacer(Modifier.weight(1f))
-        Text(if (t.paused) tr("Пауза", "Paused") else tr("Таймер", "Timer"), color = color, fontSize = 15.sp, modifier = Modifier.padding(top = 14.dp))
+        Text(if (t.paused) tr("Пауза", "Pausado") else tr("Таймер", "Timer"), color = color, fontSize = 15.sp, modifier = Modifier.padding(top = 14.dp))
         Spacer(Modifier.width(8.dp))
         Text(formatDuration(left + 999), color = color, fontSize = 44.sp, style = Digits.copy(fontWeight = FontWeight.Normal), maxLines = 1)
     }
@@ -422,7 +422,7 @@ private fun TorchCard(t: TorchState, s: IslandSettings) {
     val wave = if (s.reduceEffects) null else breath.animateFloat(0f, 1f, infiniteRepeatable(tween(1050, easing = LinearEasing)), label = "w")
     val flare = remember { Animatable(0f) }
     val scope = rememberCoroutineScope()
-    val label = if (max > 1 && t.on) tr("Фонарик · ${(share * 100).toInt()}%", "Flashlight · ${(share * 100).toInt()}%") else tr("Фонарик", "Flashlight")
+    val label = if (max > 1 && t.on) tr("Фонарик · ${(share * 100).toInt()}%", "Lanterna · ${(share * 100).toInt()}%") else tr("Фонарик", "Lanterna")
 
     Box(
         Modifier
@@ -547,7 +547,7 @@ private fun ClockChrono(c: ChronoInfo) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppIcon(c.icon, 16.dp, Ios.timer, color)
                 Spacer(Modifier.width(5.dp))
-                Text(if (paused) tr("Пауза", "Paused") else if (c.countDown) tr("Таймер", "Timer") else tr("Секундомер", "Stopwatch"),
+                Text(if (paused) tr("Пауза", "Pausado") else if (c.countDown) tr("Таймер", "Timer") else tr("Секундомер", "Cronômetro"),
                     color = color, fontSize = 14.sp, maxLines = 1)
             }
             val text = if (c.countDown) formatDuration(value + 999) else formatDuration(value) + ",%d".format((value % 1000) / 100)
@@ -641,7 +641,7 @@ private fun LiveExpanded(l: LiveInfo) {
             ) {
                 Icon(Ios.navigate, null, tint = Color.Black, modifier = Modifier.size(14.dp))
                 Spacer(Modifier.width(6.dp))
-                Text(tr("Открыть", "Open"), color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("Открыть", "Abrir"), color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
             }
         }
     }
@@ -655,7 +655,7 @@ private fun ChargingExpanded(b: BatteryInfo) {
         }
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(tr("Заряжается", "Charging"), color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
+            Text(tr("Заряжается", "Carregando"), color = Color.White, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
             Spacer(Modifier.height(8.dp))
             Box(Modifier.fillMaxWidth().height(10.dp).clip(CircleShape).background(Color.White.copy(alpha = 0.15f))) {
                 Box(Modifier.fillMaxWidth(b.level.coerceIn(0, 100) / 100f).fillMaxHeight().clip(CircleShape).background(Tints.Green))
@@ -675,8 +675,8 @@ private fun IdleExpanded(s: IslandSettings, battery: BatteryInfo) {
     val context = LocalContext.current
     val now = rememberWallNow(1000)
     val time = DateFormat.getTimeFormat(context).format(Date(now))
-    // «Пятница, 24 октября» или «Friday, October 24» — на языке острова
-    val date = SimpleDateFormat(if (Lang.en) "EEEE, MMMM d" else "EEEE, d MMMM", Lang.locale).format(Date(now))
+    // «Пятница, 24 октября» или «sexta-feira, 24 de outubro» — на языке острова
+    val date = SimpleDateFormat(if (Lang.pt) "EEEE, d 'de' MMMM" else "EEEE, d MMMM", Lang.locale).format(Date(now))
         .replaceFirstChar { it.titlecase(Lang.locale) }
     val alarm by IslandBus.nextAlarm.collectAsState()
     Column {
@@ -693,7 +693,7 @@ private fun IdleExpanded(s: IslandSettings, battery: BatteryInfo) {
                         Icon(Ios.alarm, null, tint = AlarmTint, modifier = Modifier.size(14.dp))
                         Spacer(Modifier.width(5.dp))
                         Text(tr("${wakeTime(context, a.triggerAt)} · через ${durationWords(a.triggerAt - now)}",
-                            "${wakeTime(context, a.triggerAt)} · in ${durationWords(a.triggerAt - now)}"),
+                            "${wakeTime(context, a.triggerAt)} · em ${durationWords(a.triggerAt - now)}"),
                             color = AlarmTint, fontSize = 13.sp, maxLines = 1)
                     }
                 }

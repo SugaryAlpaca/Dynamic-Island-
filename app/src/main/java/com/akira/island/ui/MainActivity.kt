@@ -192,7 +192,7 @@ private fun AppRoot() {
 }
 
 /** Вкладки: главная, что показывает остров, как он выглядит, и о приложении — отдельно от настроек. */
-private fun tabTitles() = listOf(tr("Главная", "Home"), tr("Функции", "Features"), tr("Оформление", "Appearance"), tr("О приложении", "About"))
+private fun tabTitles() = listOf(tr("Главная", "Início"), tr("Функции", "Recursos"), tr("Оформление", "Aparência"), tr("О приложении", "Sobre"))
 
 @Composable
 private fun BottomBar(selected: Int, onSelect: (Int) -> Unit) {

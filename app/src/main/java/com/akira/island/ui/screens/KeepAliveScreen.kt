@@ -36,14 +36,14 @@ fun KeepAliveScreen(onBack: () -> Unit) {
     val (battery, _) = rememberOnResume { Perms.batteryUnrestricted(context) }
     val s by SettingsRepo.state.collectAsState()
 
-    Page(tr("Чтобы остров не закрывался", "Keep the island running"), onBack,
+    Page(tr("Чтобы остров не закрывался", "Manter a ilha ativa"), onBack,
         subtitle = tr("Прошивка телефона может выгружать остров в фоне — тогда он пропадает, пока его не включить снова",
-            "Your phone's firmware may stop the island in the background — then it disappears until you turn it on again")) {
+            "O sistema do seu celular pode encerrar a ilha em segundo plano — aí ela some até você ligá-la de novo")) {
         // Процесс со службой на переднем плане Android не закрывает, когда приложение смахивают из недавних
         GroupToggle(
-            Pos.Single, Icons.Rounded.PushPin, tr("Не выгружать остров", "Keep the island loaded"),
+            Pos.Single, Icons.Rounded.PushPin, tr("Не выгружать остров", "Manter a ilha carregada"),
             tr("Остров не пропадёт, даже если смахнуть приложение из недавних. Android может показать тихое уведомление",
-                "The island stays even if you swipe the app away from recent apps. Android may show a quiet notification"),
+                "A ilha continua mesmo se você deslizar o app para fora dos apps recentes. O Android pode mostrar uma notificação silenciosa"),
             s.keepAlive, color = Tile.Purple,
         ) { v ->
             SettingsRepo.update { copy(keepAlive = v) }
@@ -53,27 +53,27 @@ fun KeepAliveScreen(onBack: () -> Unit) {
         Group {
             GroupItem(
                 if (Perms.hasAutostart()) Pos.First else Pos.Single, Icons.Rounded.BatteryChargingFull,
-                tr("Батарея без ограничений", "Unrestricted battery"),
+                tr("Батарея без ограничений", "Bateria sem restrições"),
                 batteryHint(vendor), onClick = { Perms.openBattery(context) }, color = Tile.Green,
             ) { Status(battery) }
             if (Perms.hasAutostart()) {
                 GroupItem(
-                    Pos.Last, Icons.Rounded.RocketLaunch, tr("Автозапуск", "Autostart"),
+                    Pos.Last, Icons.Rounded.RocketLaunch, tr("Автозапуск", "Início automático"),
                     tr("Включите для «Динамического острова» — тогда он запустится сам после перезагрузки и закрытия",
-                        "Turn it on for Dynamic Island — then it starts by itself after a reboot or being closed"),
+                        "Ative para a Ilha Dinâmica — assim ela inicia sozinha após reiniciar o celular ou ser fechada"),
                     onClick = { Perms.openAutostart(context) }, color = Tile.Orange,
                 ) { Arrow() }
             }
         }
 
-        SectionHeader(tr("Закрепите в недавних", "Lock it in recent apps"))
+        SectionHeader(tr("Закрепите в недавних", "Fixe nos apps recentes"))
         InfoText(lockHint(vendor))
 
-        SectionHeader(tr("Если остров всё равно пропал", "If the island still disappears"))
+        SectionHeader(tr("Если остров всё равно пропал", "Se a ilha ainda assim sumir"))
         Group {
             GroupItem(
-                Pos.First, Icons.Rounded.Lock, tr("Спец. возможности", "Accessibility"),
-                tr("Выключите и снова включите службу «Динамический остров»", "Turn the Dynamic Island service off and on again"),
+                Pos.First, Icons.Rounded.Lock, tr("Спец. возможности", "Acessibilidade"),
+                tr("Выключите и снова включите службу «Динамический остров»", "Desligue e ligue de novo o serviço da Ilha Dinâmica"),
                 onClick = { Perms.openAccessibility(context) }, color = Tile.Blue,
             ) { Arrow() }
             AppDetailsItem(Pos.Last)
@@ -84,8 +84,8 @@ fun KeepAliveScreen(onBack: () -> Unit) {
 /** Пункт «Чтобы остров не закрывался» — в «Разрешениях» и «О приложении». */
 @Composable
 internal fun KeepAliveItem(pos: Pos, open: (Screen) -> Unit) {
-    GroupItem(pos, Icons.Rounded.BatteryChargingFull, tr("Чтобы остров не закрывался", "Keep the island running"),
-        tr("Батарея, автозапуск и закрепление в недавних", "Battery, autostart and locking in recent apps"),
+    GroupItem(pos, Icons.Rounded.BatteryChargingFull, tr("Чтобы остров не закрывался", "Manter a ilha ativa"),
+        tr("Батарея, автозапуск и закрепление в недавних", "Bateria, início automático e fixação nos apps recentes"),
         onClick = { open(Screen.KEEPALIVE) }, color = Tile.Green) { Arrow() }
 }
 
@@ -93,41 +93,41 @@ internal fun KeepAliveItem(pos: Pos, open: (Screen) -> Unit) {
 @Composable
 internal fun AppDetailsItem(pos: Pos) {
     val context = LocalContext.current
-    GroupItem(pos, Icons.Rounded.Security, tr("О приложении в системе", "App info in Android"),
-        tr("Ограниченные настройки, разрешения, батарея", "Restricted settings, permissions, battery"),
+    GroupItem(pos, Icons.Rounded.Security, tr("О приложении в системе", "Informações do app no Android"),
+        tr("Ограниченные настройки, разрешения, батарея", "Configurações restritas, permissões, bateria"),
         onClick = { Perms.openAppDetails(context) }, color = Tile.Gray)
 }
 
 private fun batteryHint(v: Vendor): String = when (v) {
     Vendor.XIAOMI -> tr("«Контроль активности» или «Экономия энергии» → «Нет ограничений»",
-        "Battery saver or “Activity control” → “No restrictions”")
+        "Economia de bateria ou “Controle de atividade” → “Sem restrições”")
     Vendor.SAMSUNG -> tr("«Батарея» → «Без ограничений», и уберите остров из «Приложений в спящем режиме»",
-        "Battery → Unrestricted, and remove the island from Sleeping apps")
-    Vendor.OPPO -> tr("«Использование батареи» → разрешите работу в фоне", "Battery usage → allow background activity")
+        "Bateria → Sem restrições, e tire a ilha de Apps em suspensão")
+    Vendor.OPPO -> tr("«Использование батареи» → разрешите работу в фоне", "Uso da bateria → permita atividade em segundo plano")
     else -> tr("Найдите «Динамический остров» и выберите «Не оптимизировать» или «Без ограничений»",
-        "Find Dynamic Island and choose “Don't optimize” or “Unrestricted”")
+        "Encontre a Ilha Dinâmica e escolha “Não otimizar” ou “Sem restrições”")
 }
 
 private fun lockHint(v: Vendor): String = when (v) {
     Vendor.XIAOMI -> tr(
         "Откройте недавние приложения, зажмите карточку «Динамический остров» и нажмите на замок. " +
             "Закреплённое приложение HyperOS и MIUI не закрывают, даже когда вы чистите недавние.",
-        "Open recent apps, long-press the Dynamic Island card and tap the lock. HyperOS and MIUI don't close a " +
-            "locked app, even when you clear recent apps.",
+        "Abra os apps recentes, mantenha o cartão da Ilha Dinâmica pressionado e toque no cadeado. O HyperOS e o MIUI não " +
+            "fecham um app fixado, mesmo quando você limpa os apps recentes.",
     )
     Vendor.OPPO -> tr(
         "Откройте недавние приложения, нажмите «⋮» над карточкой «Динамический остров» (или потяните её вниз) " +
             "и выберите «Заблокировать».",
-        "Open recent apps, tap “⋮” above the Dynamic Island card (or pull it down) and choose “Lock”.",
+        "Abra os apps recentes, toque em “⋮” acima do cartão da Ilha Dinâmica (ou puxe-o para baixo) e escolha “Bloquear”.",
     )
     Vendor.SAMSUNG -> tr(
         "Откройте недавние приложения, нажмите на значок над карточкой «Динамический остров» и выберите «Не закрывать».",
-        "Open recent apps, tap the icon above the Dynamic Island card and choose “Keep open”.",
+        "Abra os apps recentes, toque no ícone acima do cartão da Ilha Dinâmica e escolha “Manter aberto”.",
     )
     else -> tr(
         "Откройте недавние приложения и потяните карточку «Динамический остров» вниз или зажмите её — " +
             "появится замок. Закреплённое приложение не закрывается, когда вы чистите недавние.",
-        "Open recent apps and pull the Dynamic Island card down or long-press it — a lock appears. A locked app " +
-            "isn't closed when you clear recent apps.",
+        "Abra os apps recentes e puxe o cartão da Ilha Dinâmica para baixo ou mantenha-o pressionado — um cadeado " +
+            "aparece. Um app fixado não é fechado quando você limpa os apps recentes.",
     )
 }

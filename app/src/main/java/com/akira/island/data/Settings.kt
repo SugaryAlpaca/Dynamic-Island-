@@ -14,9 +14,9 @@ import kotlinx.serialization.json.Json
 /** Сколько раз в секунду рисуются живые украшения: эквалайзер, светящаяся точка. 0 — с частотой экрана */
 @Serializable
 enum class FxRate(val fps: Int, private val ru: String, private val en: String) {
-    ECO(30, "30 кадров — экономнее", "30 fps — saves power"),
-    SMOOTH(60, "60 кадров — плавно", "60 fps — smooth"),
-    MAX(0, "Как у экрана — до 120", "Screen rate — up to 120"),
+    ECO(30, "30 кадров — экономнее", "30 quadros — economiza bateria"),
+    SMOOTH(60, "60 кадров — плавно", "60 quadros — fluido"),
+    MAX(0, "Как у экрана — до 120", "Taxa da tela — até 120"),
     ;
 
     val title: String get() = tr(ru, en)
@@ -24,10 +24,10 @@ enum class FxRate(val fps: Int, private val ru: String, private val en: String) 
 
 @Serializable
 enum class ExpandStyle(private val ru: String, private val en: String) {
-    FRUIT("Как Фрукт", "Like a Fruit"),
-    SPRING("Пружина", "Spring"),
-    SMOOTH("Плавно", "Smooth"),
-    INSTANT("Без анимации", "No animation"),
+    FRUIT("Как Фрукт", "Como uma Fruta"),
+    SPRING("Пружина", "Mola"),
+    SMOOTH("Плавно", "Suave"),
+    INSTANT("Без анимации", "Sem animação"),
     ;
 
     val title: String get() = tr(ru, en)
@@ -35,10 +35,10 @@ enum class ExpandStyle(private val ru: String, private val en: String) {
 
 @Serializable
 enum class Elasticity(private val ru: String, private val en: String, val damping: Float) {
-    NONE("Без упругости", "No bounce", 1f),
-    LOW("Слабая упругость", "Light bounce", 0.8f),
-    MEDIUM("Средняя упругость", "Medium bounce", 0.62f),
-    HIGH("Сильная упругость", "Strong bounce", 0.48f),
+    NONE("Без упругости", "Sem elasticidade", 1f),
+    LOW("Слабая упругость", "Elasticidade leve", 0.8f),
+    MEDIUM("Средняя упругость", "Elasticidade média", 0.62f),
+    HIGH("Сильная упругость", "Elasticidade forte", 0.48f),
     ;
 
     val title: String get() = tr(ru, en)
@@ -46,12 +46,12 @@ enum class Elasticity(private val ru: String, private val en: String, val dampin
 
 @Serializable
 enum class TapAction(private val ru: String, private val en: String) {
-    EXPAND("Раскрыть капсулу", "Expand the capsule"),
-    OPEN_APP("Открыть приложение", "Open the app"),
-    PLAY_PAUSE("Пауза / воспроизведение", "Play / pause"),
-    NEXT_TRACK("Следующий трек", "Next track"),
-    SCREENSHOT("Скриншот без острова", "Screenshot without the island"),
-    NOTHING("Ничего", "Nothing"),
+    EXPAND("Раскрыть капсулу", "Expandir a cápsula"),
+    OPEN_APP("Открыть приложение", "Abrir o app"),
+    PLAY_PAUSE("Пауза / воспроизведение", "Tocar / pausar"),
+    NEXT_TRACK("Следующий трек", "Próxima faixa"),
+    SCREENSHOT("Скриншот без острова", "Captura de tela sem a ilha"),
+    NOTHING("Ничего", "Nada"),
     ;
 
     val title: String get() = tr(ru, en)
@@ -61,11 +61,11 @@ enum class TapAction(private val ru: String, private val en: String) {
 @Serializable
 enum class QuickAction(private val ru: String, private val en: String, private val shortRu: String, private val shortEn: String) {
     TIMER("Таймер", "Timer", "Таймер", "Timer"),
-    STOPWATCH("Секундомер", "Stopwatch", "Секундомер", "Stopwatch"),
-    FLASHLIGHT("Фонарик", "Flashlight", "Фонарик", "Flashlight"),
-    SCREENSHOT("Скриншот без острова", "Screenshot without the island", "Скриншот", "Screenshot"),
-    CAMERA("Камера", "Camera", "Камера", "Camera"),
-    LOCK("Заблокировать экран", "Lock the screen", "Блокировка", "Lock"),
+    STOPWATCH("Секундомер", "Cronômetro", "Секундомер", "Cronômetro"),
+    FLASHLIGHT("Фонарик", "Lanterna", "Фонарик", "Lanterna"),
+    SCREENSHOT("Скриншот без острова", "Captura de tela sem a ilha", "Скриншот", "Captura"),
+    CAMERA("Камера", "Câmera", "Камера", "Câmera"),
+    LOCK("Заблокировать экран", "Bloquear a tela", "Блокировка", "Bloquear"),
     ;
 
     val title: String get() = tr(ru, en)
@@ -75,26 +75,26 @@ enum class QuickAction(private val ru: String, private val en: String, private v
 /** Откуда берётся цвет кнопок «Ответить», «Пометить прочитанным» и отправки в карточке уведомления. */
 @Serializable
 enum class AccentMode(private val ru: String, private val en: String, private val hintRu: String, private val hintEn: String) {
-    DEFAULT("Сиреневый", "Lavender", "Цвет приложения", "The app's color"),
-    SYSTEM("Системный", "System", "Цвет из обоев Android 12+ (Material You)", "From your Android 12+ wallpaper (Material You)"),
-    ADAPTIVE("Из аватара", "From the avatar", "Подбирается по аватару или значку приложения", "Matched to the avatar or app icon"),
-    CUSTOM("Свой", "Custom", "Любой цвет из набора", "Any color from the palette"),
+    DEFAULT("Сиреневый", "Lavanda", "Цвет приложения", "Cor do app"),
+    SYSTEM("Системный", "Sistema", "Цвет из обоев Android 12+ (Material You)", "Cor do papel de parede do Android 12+ (Material You)"),
+    ADAPTIVE("Из аватара", "Do avatar", "Подбирается по аватару или значку приложения", "Ajustada ao avatar ou ao ícone do app"),
+    CUSTOM("Свой", "Personalizada", "Любой цвет из набора", "Qualquer cor da paleta"),
     ;
 
     val title: String get() = tr(ru, en)
     val hint: String get() = tr(hintRu, hintEn)
 }
 
-/** Язык приложения и острова. «Как в системе» — русский, если телефон на русском, иначе английский. */
+/** Язык приложения и острова: русский или португальский (Бразилия). «Как в системе» — русский, если телефон на русском, иначе португальский. */
 @Serializable
 enum class AppLanguage {
-    SYSTEM, RU, EN;
+    SYSTEM, RU, PT;
 
     val title: String
         get() = when (this) {
-            SYSTEM -> tr("Как в системе", "System default")
+            SYSTEM -> tr("Как в системе", "Padrão do sistema")
             RU -> "Русский"
-            EN -> "English"
+            PT -> "Português (Brasil)"
         }
 }
 

@@ -252,7 +252,7 @@ class IslandService : AccessibilityService() {
         }
 
         scope.launch {
-            combine(SettingsRepo.state, IslandBus.landscape, IslandBus.offSchedule) { s, land, _ -> s to land }
+            combine(SettingsRepo.state, IslandBus.landscape, IslandBus.offSchedule, IslandBus.screenOn) { s, land, _, _ -> s to land }
                 .collect { (s, land) -> applySettings(s, land) }
         }
 
@@ -366,7 +366,10 @@ class IslandService : AccessibilityService() {
 
     private fun applySettings(s: IslandSettings, landscape: Boolean) {
         visible = s.enabled && !(s.hideInLandscape && landscape) && !IslandBus.offSchedule.value
-        display?.visibility = if (visible) View.VISIBLE else View.GONE
+        // Always On Display: a tela fica "não interativa" (sem SCREEN_ON), mas o sistema ainda desenha janelas de
+        // acessibilidade nela. Escondemos só a janela da ilha; o Compose continua ativo (ver abaixo), para ela
+        // reaparecer na hora quando a tela acender.
+        display?.visibility = if (visible && IslandBus.screenOn.value) View.VISIBLE else View.GONE
         // Остров спрятан — выключен, вне расписания или в повороте (скажем, смотрят видео): Compose в его окне
         // не рисует и не просыпается ради анимаций и эквалайзера, пока остров снова не покажется. С погашенным
         // экраном так не делаем: включили экран — остров сразу показывает то, что есть сейчас, а украшения

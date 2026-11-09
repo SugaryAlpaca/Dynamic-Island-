@@ -43,9 +43,9 @@ class KeepAliveService : Service() {
 
     private fun notification(): Notification {
         getSystemService(NotificationManager::class.java)?.createNotificationChannel(
-            NotificationChannel(CHANNEL, tr("Работа острова", "Island running"), NotificationManager.IMPORTANCE_MIN).apply {
+            NotificationChannel(CHANNEL, tr("Работа острова", "Ilha ativa"), NotificationManager.IMPORTANCE_MIN).apply {
                 description = tr("Не даёт Android закрыть остров, когда его смахивают из недавних",
-                    "Keeps Android from closing the island when it's swiped away from recent apps")
+                    "Impede o Android de fechar a ilha quando você a remove dos apps recentes")
                 setShowBadge(false)
             },
         )
@@ -54,8 +54,8 @@ class KeepAliveService : Service() {
             ?.let { PendingIntent.getActivity(this, 0, it, PendingIntent.FLAG_IMMUTABLE) }
         return Notification.Builder(this, CHANNEL)
             .setSmallIcon(R.drawable.ic_tab_island)
-            .setContentTitle(tr("Остров работает", "The island is running"))
-            .setContentText(tr("Уведомление не даёт системе закрыть остров", "This notification keeps the system from closing the island"))
+            .setContentTitle(tr("Остров работает", "A ilha está ativa"))
+            .setContentText(tr("Уведомление не даёт системе закрыть остров", "Esta notificação impede o sistema de fechar a ilha"))
             .setContentIntent(open)
             .setOngoing(true)
             .setShowWhen(false)

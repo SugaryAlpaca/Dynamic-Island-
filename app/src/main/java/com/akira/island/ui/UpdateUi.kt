@@ -75,10 +75,10 @@ fun UpdateSection() {
             }
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
-                Text(tr("Доступна версия ${release.version}", "Version ${release.version} is available"),
+                Text(tr("Доступна версия ${release.version}", "A versão ${release.version} está disponível"),
                     color = Ui.Text, fontSize = 17.sp, fontWeight = FontWeight.SemiBold)
                 val size = if (release.sizeBytes > 0) tr(" · %.1f МБ", " · %.1f MB").format(release.sizeBytes / 1_048_576.0) else ""
-                Text(tr("Сейчас установлена ${UpdateChecker.currentVersion(context)}$size", "Installed: ${UpdateChecker.currentVersion(context)}$size"),
+                Text(tr("Сейчас установлена ${UpdateChecker.currentVersion(context)}$size", "Instalada: ${UpdateChecker.currentVersion(context)}$size"),
                     color = Ui.Sub, fontSize = 14.sp)
             }
         }
@@ -87,7 +87,7 @@ fun UpdateSection() {
                 Modifier.padding(top = 10.dp).clip(RoundedCornerShape(12.dp)).clickable { notes = !notes }.padding(vertical = 4.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(tr("Что нового", "What's new"), color = Ui.Primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
+                Text(tr("Что нового", "Novidades"), color = Ui.Primary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                 Icon(
                     Icons.Rounded.KeyboardArrowDown, null, tint = Ui.Primary,
                     modifier = Modifier.size(22.dp).graphicsLayer { rotationZ = if (notes) 180f else 0f },
@@ -108,16 +108,16 @@ fun UpdateSection() {
                     color = Ui.Primary,
                     trackColor = Ui.IconBg,
                 )
-                Text(tr("Скачиваю… ${(d.progress * 100).toInt()}%", "Downloading… ${(d.progress * 100).toInt()}%"),
+                Text(tr("Скачиваю… ${(d.progress * 100).toInt()}%", "Baixando… ${(d.progress * 100).toInt()}%"),
                     color = Ui.Sub, fontSize = 13.sp, modifier = Modifier.padding(top = 8.dp))
             }
             ready != null -> {
                 Text(
                     tr("Если установка не открылась, разрешите острову устанавливать приложения и нажмите «Установить» ещё раз.",
-                        "If the installer didn't open, allow the island to install apps and tap Install again."),
+                        "Se a instalação não abriu, permita que a ilha instale apps e toque em Instalar de novo."),
                     color = Ui.Sub, fontSize = 13.sp, lineHeight = 18.sp, modifier = Modifier.padding(bottom = 10.dp),
                 )
-                FilledPill(tr("Установить", "Install")) { UpdateChecker.install(context, ready) }
+                FilledPill(tr("Установить", "Instalar")) { UpdateChecker.install(context, ready) }
             }
             else -> {
                 if (d is DownloadState.Failed) {
@@ -125,13 +125,13 @@ fun UpdateSection() {
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // Загрузка не обрывается, если уйти с экрана: она идёт в общей области приложения, как из острова
-                    FilledPill(tr("Обновить", "Update")) {
+                    FilledPill(tr("Обновить", "Atualizar")) {
                         IslandBus.scope.launch { UpdateChecker.downloadAndInstall(context.applicationContext, release) }
                     }
                     Spacer(Modifier.width(10.dp))
                     Box(
                         Modifier.clip(CircleShape).clickable { UpdateChecker.skip(release.version) }.padding(horizontal = 16.dp, vertical = 12.dp),
-                    ) { Text(tr("Позже", "Later"), color = Ui.Sub, fontSize = 15.sp, fontWeight = FontWeight.Medium) }
+                    ) { Text(tr("Позже", "Depois"), color = Ui.Sub, fontSize = 15.sp, fontWeight = FontWeight.Medium) }
                 }
             }
         }
@@ -148,11 +148,11 @@ private fun FilledPill(text: String, onClick: () -> Unit) {
 
 /** Что показать про проверку обновлений: подпись под «Проверить сейчас». */
 fun updateStatusText(state: UpdateState, current: String): String = when (state) {
-    UpdateState.Checking -> tr("Проверяю…", "Checking…")
-    UpdateState.UpToDate -> tr("У вас последняя версия $current", "You have the latest version $current")
-    is UpdateState.Available -> tr("Доступна версия ${state.release.version}", "Version ${state.release.version} is available")
+    UpdateState.Checking -> tr("Проверяю…", "Verificando…")
+    UpdateState.UpToDate -> tr("У вас последняя версия $current", "Você está com a versão mais recente: $current")
+    is UpdateState.Available -> tr("Доступна версия ${state.release.version}", "A versão ${state.release.version} está disponível")
     is UpdateState.Error -> state.message
-    UpdateState.Idle -> tr("Сейчас установлена версия $current", "Installed version: $current")
+    UpdateState.Idle -> tr("Сейчас установлена версия $current", "Versão instalada: $current")
 }
 
 /**
@@ -194,15 +194,15 @@ fun NotesDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         containerColor = Ui.Card,
         titleContentColor = Ui.Text,
-        title = { Text(tr("Что нового в $current", "What's new in $current")) },
+        title = { Text(tr("Что нового в $current", "Novidades da versão $current")) },
         text = {
             if (notes != null) {
                 ReleaseNotes(notes, Modifier.heightIn(max = 420.dp).verticalScroll(rememberScrollState()))
             } else {
-                Text(tr("Список изменений не найден", "No list of changes found"), color = Ui.Sub, fontSize = 14.sp)
+                Text(tr("Список изменений не найден", "Lista de mudanças não encontrada"), color = Ui.Sub, fontSize = 14.sp)
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text(tr("Понятно", "Got it"), color = Ui.Primary) } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(tr("Понятно", "Entendi"), color = Ui.Primary) } },
     )
 }
 
@@ -242,4 +242,4 @@ private fun inline(text: String): AnnotatedString = buildAnnotatedString {
 }
 
 /** «Что нового» внутри приложения на его языке. */
-private fun whatsNewFile() = if (Lang.en) "whatsnew.en.md" else "whatsnew.md"
+private fun whatsNewFile() = if (Lang.pt) "whatsnew.pt.md" else "whatsnew.md"

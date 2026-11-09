@@ -105,7 +105,7 @@ fun Page(
                     Modifier.size(48.dp).clip(CircleShape).background(Ui.Card).clickable(onClick = onBack),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, tr("Назад", "Back"), tint = Ui.Text)
+                    Icon(Icons.AutoMirrored.Rounded.ArrowBack, tr("Назад", "Voltar"), tint = Ui.Text)
                 }
                 Spacer(Modifier.width(18.dp))
             } else {
@@ -464,6 +464,6 @@ fun <T> ChoiceDialog(
                 }
             }
         },
-        confirmButton = { TextButton(onClick = onDismiss) { Text(tr("Закрыть", "Close"), color = Ui.Primary) } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(tr("Закрыть", "Fechar"), color = Ui.Primary) } },
     )
 }

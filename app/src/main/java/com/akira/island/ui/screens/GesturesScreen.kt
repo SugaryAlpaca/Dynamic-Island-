@@ -30,27 +30,27 @@ fun GesturesScreen(onBack: () -> Unit) {
     val s by SettingsRepo.state.collectAsState()
     var dialog by remember { mutableStateOf<Which?>(null) }
 
-    Page(tr("Жесты", "Gestures"), onBack,
+    Page(tr("Жесты", "Gestos"), onBack,
         subtitle = tr("Раскрытый остров сворачивается нажатием или касанием за его пределами",
-            "The expanded island collapses with a tap or a touch outside it")) {
-        SectionHeader(tr("Нажатия", "Taps"))
+            "A ilha expandida recolhe com um toque nela ou fora dela")) {
+        SectionHeader(tr("Нажатия", "Toques"))
         Group {
-            GroupItem(Pos.First, Icons.Rounded.TouchApp, tr("Одиночное нажатие", "Single tap"), s.tapAction.title,
+            GroupItem(Pos.First, Icons.Rounded.TouchApp, tr("Одиночное нажатие", "Toque simples"), s.tapAction.title,
                 onClick = { dialog = Which.TAP }, color = Tile.Blue)
-            GroupItem(Pos.Middle, Icons.Rounded.TouchApp, tr("Двойное нажатие", "Double tap"), s.doubleTapAction.title,
+            GroupItem(Pos.Middle, Icons.Rounded.TouchApp, tr("Двойное нажатие", "Toque duplo"), s.doubleTapAction.title,
                 onClick = { dialog = Which.DOUBLE }, color = Tile.Indigo)
-            GroupItem(Pos.Last, Icons.Rounded.PanTool, tr("Долгое нажатие", "Long press"), s.longPressAction.title,
+            GroupItem(Pos.Last, Icons.Rounded.PanTool, tr("Долгое нажатие", "Toque longo"), s.longPressAction.title,
                 onClick = { dialog = Which.LONG }, color = Tile.Orange)
         }
-        SectionHeader(tr("Свайпы", "Swipes"))
+        SectionHeader(tr("Свайпы", "Deslizes"))
         Group {
-            GroupToggle(Pos.First, Icons.Rounded.KeyboardArrowDown, tr("Потянуть вниз", "Pull down"),
-                tr("Раскрыть капсулу, вверх — свернуть", "Expand the capsule, up — collapse"),
+            GroupToggle(Pos.First, Icons.Rounded.KeyboardArrowDown, tr("Потянуть вниз", "Puxar para baixo"),
+                tr("Раскрыть капсулу, вверх — свернуть", "Expande a cápsula; para cima — recolhe"),
                 s.swipeExpand, color = Tile.Teal) { v ->
                 SettingsRepo.update { copy(swipeExpand = v) }
             }
-            GroupToggle(Pos.Last, Icons.Rounded.SwapHoriz, tr("Толкнуть вбок", "Push sideways"),
-                tr("Влево — следующий трек, вправо — предыдущий", "Left — next track, right — previous"),
+            GroupToggle(Pos.Last, Icons.Rounded.SwapHoriz, tr("Толкнуть вбок", "Empurrar para o lado"),
+                tr("Влево — следующий трек, вправо — предыдущий", "Esquerda — próxima faixa, direita — faixa anterior"),
                 s.swipeTracks, color = Tile.Purple) { v ->
                 SettingsRepo.update { copy(swipeTracks = v) }
             }
@@ -58,11 +58,11 @@ fun GesturesScreen(onBack: () -> Unit) {
     }
 
     when (dialog) {
-        Which.TAP -> ChoiceDialog(tr("Одиночное нажатие", "Single tap"), TapAction.entries, s.tapAction, { it.title },
+        Which.TAP -> ChoiceDialog(tr("Одиночное нажатие", "Toque simples"), TapAction.entries, s.tapAction, { it.title },
             { v -> SettingsRepo.update { copy(tapAction = v) } }) { dialog = null }
-        Which.DOUBLE -> ChoiceDialog(tr("Двойное нажатие", "Double tap"), TapAction.entries, s.doubleTapAction, { it.title },
+        Which.DOUBLE -> ChoiceDialog(tr("Двойное нажатие", "Toque duplo"), TapAction.entries, s.doubleTapAction, { it.title },
             { v -> SettingsRepo.update { copy(doubleTapAction = v) } }) { dialog = null }
-        Which.LONG -> ChoiceDialog(tr("Долгое нажатие", "Long press"), TapAction.entries, s.longPressAction, { it.title },
+        Which.LONG -> ChoiceDialog(tr("Долгое нажатие", "Toque longo"), TapAction.entries, s.longPressAction, { it.title },
             { v -> SettingsRepo.update { copy(longPressAction = v) } }) { dialog = null }
         null -> Unit
     }

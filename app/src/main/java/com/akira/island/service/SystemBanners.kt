@@ -65,8 +65,8 @@ object SystemBanners {
     }
 
     fun label(context: Context, pkg: String): String = when (pkg) {
-        SYSTEM_UI -> tr("Системный интерфейс", "System UI")
-        ANDROID -> tr("Система Android", "Android System")
+        SYSTEM_UI -> tr("Системный интерфейс", "Interface do sistema")
+        ANDROID -> tr("Система Android", "Sistema Android")
         else -> NotificationParser.appLabel(context, pkg)
     }
 

@@ -25,7 +25,7 @@ class IslandTile : TileService() {
         val tile = qsTile ?: return
         val on = IslandBus.serviceRunning.value
         tile.state = if (on) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) tile.subtitle = if (on) tr("Включён", "On") else tr("Выключен", "Off")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) tile.subtitle = if (on) tr("Включён", "Ligado") else tr("Выключен", "Desligado")
         tile.updateTile()
     }
 
@@ -36,7 +36,7 @@ class IslandTile : TileService() {
             // Служба выключится через мгновение — плитку гасим сразу
             qsTile?.let {
                 it.state = Tile.STATE_INACTIVE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) it.subtitle = tr("Выключен", "Off")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) it.subtitle = tr("Выключен", "Desligado")
                 it.updateTile()
             }
         } else {
