@@ -59,8 +59,8 @@ fun CardsScreen(onBack: () -> Unit, onInstruction: () -> Unit) {
                     "“Defina um timer de 5 minutos”, dito a um assistente ou widget, pode ser entregue à ilha"),
                 s.timerFromAssistant, color = Tile.Pink) { set { copy(timerFromAssistant = it) } }
             GroupToggle(Pos.Last, Icons.Rounded.Bedtime, tr("Будильник", "Alarme"),
-                tr("За 12 часов до будильника — время подъёма и циферблат сна, как на iPhone",
-                    "12 horas antes de um alarme — o horário de acordar e um mostrador de sono, como no iPhone"),
+                tr("За час до будильника — время подъёма и циферблат сна, как на iPhone",
+                    "1 hora antes de um alarme — o horário de acordar e um mostrador de sono, como no iPhone"),
                 s.cardAlarm, color = Tile.Indigo) { set { copy(cardAlarm = it) } }
         }
 

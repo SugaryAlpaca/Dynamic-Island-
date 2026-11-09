@@ -156,7 +156,7 @@ fun IslandOverlay(
     val nextAlarm by IslandBus.nextAlarm.collectAsState()
     val egg by IslandBus.egg.collectAsState()
     val payReady by IslandBus.payReady.collectAsState()
-    // Будильник появляется в острове за 12 часов и уходит, когда прозвенел: просыпаемся ровно в эти два момента,
+    // Будильник появляется в острове за час и уходит, когда прозвенел: просыпаемся ровно в эти два момента,
     // а не каждые полминуты. Пока телефон спит, ожидание стоит — поэтому со включением экрана пересчитываем
     val screenOn by IslandBus.screenOn.collectAsState()
     var alarmNow by remember { mutableLongStateOf(System.currentTimeMillis()) }

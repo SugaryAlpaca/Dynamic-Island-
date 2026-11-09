@@ -72,7 +72,7 @@ private val Dim = Color.White.copy(alpha = 0.55f)
 private const val DAY = 86_400_000L
 
 /** За сколько до будильника он появляется в острове. */
-const val ALARM_LEAD_MS = 12 * 3_600_000L
+const val ALARM_LEAD_MS = 1 * 3_600_000L
 
 /** Утренний будильник (с 3 до 12) — это подъём: тогда остров говорит «сон», а не «через». */
 fun isWakeUp(triggerAt: Long): Boolean =

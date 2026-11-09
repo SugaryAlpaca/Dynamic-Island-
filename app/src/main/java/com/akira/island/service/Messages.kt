@@ -37,9 +37,20 @@ import com.akira.island.island.Ios
  * WhatsApp, почта и т. п. Показываются только те, что система и так показала бы всплывающими.
  */
 object Messages {
+    /** Сколько сообщений максимум в списке под карточкой */
+    private const val MAX_HISTORY = 3
+
+    /** Сообщения, пришедшие подряд в пределах этого времени, считаются одной пачкой */
+    private const val BURST_MS = 2 * 60_000L
+
     /** Последний показанный текст для каждого уведомления — чтобы не повторять одно и то же */
     private val shown = object : LinkedHashMap<String, String>(64, 0.75f, true) {
         override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, String>?) = size > 100
+    }
+
+    /** Время последнего сообщения, которое уже показали, для каждого уведомления — старые сообщения переписки не повторяем */
+    private val shownUpTo = object : LinkedHashMap<String, Long>(64, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Long>?) = size > 100
     }
 
     /** Куда только что ответили из острова: обновление этого уведомления с нашим же ответом не показываем */
@@ -108,6 +119,8 @@ object Messages {
         // Обновление того же уведомления, которое просит не звенеть повторно
         if (previous != null && n.flags and Notification.FLAG_ONLY_ALERT_ONCE != 0) return
         shown[sbn.key] = signature
+        // Что уже показывали: в списке под карточкой остаются только сообщения новее этого
+        val since = shownUpTo[sbn.key] ?: 0L
 
         val avatar = runCatching {
             n.getLargeIcon()?.loadDrawable(service)?.toBitmap(128, 128)?.asImageBitmap()
@@ -124,9 +137,10 @@ object Messages {
             actions = actions,
             // Разбор палитры нужен только для цвета кнопок «Из аватара»
             accent = if (s.accentMode == AccentMode.ADAPTIVE) accentOf(avatar ?: NotificationParser.icon(service, sbn.packageName)) else null,
-            history = history(ex),
+            history = history(ex, since),
             sensitive = sensitive,
         )
+        latestTime(ex)?.let { shownUpTo[sbn.key] = it }
         IslandBus.post(
             Notice(
                 title = title.ifEmpty { appName },
@@ -162,18 +176,37 @@ object Messages {
         return listOfNotNull(reply, read ?: other)
     }
 
-    /** Все сообщения переписки для списка под карточкой: у групп с именем отправителя. */
-    private fun history(ex: Bundle): List<String> {
+    /** Время самого свежего сообщения переписки (миллисекунды), если мессенджер его передал. */
+    private fun latestTime(ex: Bundle): Long? {
+        @Suppress("DEPRECATION")
+        val arr: Array<Parcelable> = ex.getParcelableArray(Notification.EXTRA_MESSAGES) ?: return null
+        return arr.mapNotNull { (it as? Bundle)?.getLong("time", 0L)?.takeIf { t -> t > 0 } }.maxOrNull()
+    }
+
+    /**
+     * Сообщения для списка под карточкой — только новые: мессенджер присылает в уведомлении всю переписку,
+     * а старые сообщения (вчерашние, прочитанные) повторять не нужно. Новее — значит позже того, что уже
+     * показали; в первый раз — те, что пришли пачкой, не раньше чем за пару минут до последнего.
+     * Больше [MAX_HISTORY] не показываем, остальное видно в самом мессенджере.
+     * У групп — с именем отправителя.
+     */
+    private fun history(ex: Bundle, since: Long): List<String> {
         @Suppress("DEPRECATION")
         val arr: Array<Parcelable> = ex.getParcelableArray(Notification.EXTRA_MESSAGES) ?: return emptyList()
         val group = ex.getBoolean(Notification.EXTRA_IS_GROUP_CONVERSATION, false)
-        return arr.mapNotNull { p ->
+        val all = arr.mapNotNull { p ->
             val b = p as? Bundle ?: return@mapNotNull null
             val text = b.getCharSequence("text")?.toString()?.trim().orEmpty()
             if (text.isEmpty()) return@mapNotNull null
             val sender = b.getCharSequence("sender")?.toString()
-            if (group && !sender.isNullOrBlank()) "$sender: $text" else text
-        }.takeLast(6)
+            val line = if (group && !sender.isNullOrBlank()) "$sender: $text" else text
+            b.getLong("time", 0L) to line
+        }
+        val latest = all.maxOfOrNull { it.first } ?: 0L
+        val cutoff = if (since > 0) since else latest - BURST_MS
+        // Если мессенджер не передал время (0), отличить старое от нового нельзя — берём как есть
+        val fresh = all.filter { it.first == 0L || it.first > cutoff }
+        return fresh.ifEmpty { all.takeLast(1) }.takeLast(MAX_HISTORY).map { it.second }
     }
 
     /** Яркий цвет аватара или значка приложения — читается на чёрном и подходит для кнопок. */
@@ -231,6 +264,7 @@ object Messages {
 
     fun forget(key: String) {
         shown.remove(key)
+        shownUpTo.remove(key)
         repliedAt.remove(key)
     }
 }
